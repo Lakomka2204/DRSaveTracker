@@ -21,16 +21,19 @@ jobs:
         run: dotnet restore
 
       - name: Publish Release
+        shell: bash
         run: >
-          dotnet publish DRSaveTracker/DRSaveTracker.csproj \
+          dotnet publish winforms/DRSaveTracker.csproj \
             -c Release \
             -r win-x64 \
-            -o publish
+            -o publish \
             --self-contained true \
             -p:PublishSingleFile=true \
             -p:DebugType=None \
-            -p:DebugSymbols=false
-
+            -p:DebugSymbols=false \
+            -p:PublishSingleFile=true \
+            -p:PublishTrimmed=false
+            
       - name: Remove PDB files
         shell: pwsh
         run: |
