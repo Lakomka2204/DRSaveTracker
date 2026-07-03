@@ -1,8 +1,4 @@
 <Solution>
-  <Folder Name="/.github/" />
-  <Folder Name="/.github/workflows/">
-    <File Path="build.yml" />
-  </Folder>
   <Project Path="consoletui/consoletui.csproj" Id="5876797b-7f60-491c-939c-e86b6b2b4fe5" />
   <Project Path="core/DRSTCore.csproj" Id="1872da2c-f235-42f1-8483-674862739945" />
   <Project Path="winforms/DRSaveTracker.csproj" />
