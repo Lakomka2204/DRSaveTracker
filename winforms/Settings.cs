@@ -1,9 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using System.IO;
+﻿using System.ComponentModel;
 using System.Text.Json;
-using Microsoft.Win32;
-using System.Windows.Forms;
 
 namespace DRSaveTracker
 {
@@ -20,7 +16,10 @@ namespace DRSaveTracker
         };
 
         private static readonly string DirectoryPath =
-            Application.UserAppDataPath;
+            Path.Join(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                Program.AppName
+                );
 
         private static readonly string FilePath =
             Path.Combine(DirectoryPath, "settings.json");
@@ -50,14 +49,14 @@ namespace DRSaveTracker
             get => _seenToolTip;
             set => SetField(ref _seenToolTip, value, nameof(SeenToolTip));
         }
-        private bool fetchRoomNames;
+        private bool fetchRoomNames = true;
         public bool FetchRoomNames
         {
             get => fetchRoomNames;
-            set => SetField(ref fetchRoomNames,value, nameof(FetchRoomNames));
+            set => SetField(ref fetchRoomNames, value, nameof(FetchRoomNames));
         }
 
-        private bool _hideOnClose;
+        private bool _hideOnClose = false;
         public bool HideOnClose
         {
             get => _hideOnClose;

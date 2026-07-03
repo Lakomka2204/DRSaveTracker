@@ -18,5 +18,6 @@ namespace DRSaveTracker
             };
             Application.Run(main);
         }
+        public static string AppName = "DRSaveTracker";
     }
 }

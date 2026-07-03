@@ -1,6 +1,5 @@
 ﻿using DRSTCore;
 using System.Data;
-using System.Diagnostics;
 
 namespace DRSaveTracker
 {
@@ -29,10 +28,21 @@ namespace DRSaveTracker
         private bool _silent = false;
         private readonly Settings settings;
         private readonly RoomMapper rmi;
-        private static readonly string saveFolder = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DELTARUNE");
-        private static readonly string backupFolder = Path.Join(Application.LocalUserAppDataPath, "Backups");
-        private static readonly string cacheFolder = Path.Join(Application.LocalUserAppDataPath, "Cache");
-        private void UpdateListViewItem(ListViewItem lvi, SaveFileInfo svi)
+        private static readonly string saveFolder = Path.Join(
+            Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData),
+            "DELTARUNE");
+        private static readonly string backupFolder = Path.Join(
+            Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData),
+            Program.AppName,
+            "Backups");
+        private static readonly string cacheFolder = Path.Join(
+            Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData),
+            Program.AppName,
+            "Cache");
+        private static void UpdateListViewItem(ListViewItem lvi, SaveFileInfo svi)
         {
             lvi.Text = svi.Slot.ToString();
             if (lvi.SubItems.Count > 1)
@@ -142,7 +152,7 @@ namespace DRSaveTracker
             try
             {
                 f.EnableRaisingEvents = false;
-                toolStripStatusLabel1.Text = string.Format("Updated via: {0};{1}", e.ChangeType.ToString(), e.FullPath);
+                //toolStripStatusLabel1.Text = string.Format("Updated via: {0};{1}", e.ChangeType.ToString(), e.FullPath);
                 //if (e.ChangeType == WatcherChangeTypes.Created)
                 //    RefreshSaveInfo();
                 if ((e.ChangeType & (WatcherChangeTypes.Created | WatcherChangeTypes.Deleted)) != 0)
@@ -245,7 +255,6 @@ namespace DRSaveTracker
 
         private void hideToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             Hide();
         }
 

@@ -30,13 +30,14 @@
         {
             components = new System.ComponentModel.Container();
             groupBox1 = new GroupBox();
+            hideOnCloseCB = new CheckBox();
             startupCB = new CheckBox();
             settingsBindingSource = new BindingSource(components);
             groupBox2 = new GroupBox();
             rmNameCB = new CheckBox();
             label3 = new Label();
             label4 = new Label();
-            hideOnCloseCB = new CheckBox();
+            verLabel = new Label();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)settingsBindingSource).BeginInit();
             groupBox2.SuspendLayout();
@@ -54,6 +55,16 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Program";
             // 
+            // hideOnCloseCB
+            // 
+            hideOnCloseCB.AutoSize = true;
+            hideOnCloseCB.Location = new Point(32, 113);
+            hideOnCloseCB.Name = "hideOnCloseCB";
+            hideOnCloseCB.Size = new Size(515, 36);
+            hideOnCloseCB.TabIndex = 1;
+            hideOnCloseCB.Text = "Hide program in tray when closing window?";
+            hideOnCloseCB.UseVisualStyleBackColor = true;
+            // 
             // startupCB
             // 
             startupCB.AutoSize = true;
@@ -63,10 +74,6 @@
             startupCB.TabIndex = 0;
             startupCB.Text = "Run on system startup?";
             startupCB.UseVisualStyleBackColor = true;
-            // 
-            // settingsBindingSource
-            // 
-            settingsBindingSource.DataSource = typeof(Settings);
             // 
             // groupBox2
             // 
@@ -97,7 +104,7 @@
             label3.Name = "label3";
             label3.Size = new Size(193, 32);
             label3.TabIndex = 2;
-            label3.Text = "Author: Lakomka";
+            label3.Text = "Author: Lakomka\r\n";
             // 
             // label4
             // 
@@ -110,21 +117,22 @@
             label4.Text = "Close window to save changes";
             label4.TextAlign = ContentAlignment.TopRight;
             // 
-            // hideOnCloseCB
+            // verLabel
             // 
-            hideOnCloseCB.AutoSize = true;
-            hideOnCloseCB.Location = new Point(32, 113);
-            hideOnCloseCB.Name = "hideOnCloseCB";
-            hideOnCloseCB.Size = new Size(515, 36);
-            hideOnCloseCB.TabIndex = 1;
-            hideOnCloseCB.Text = "Hide program in tray when closing window?";
-            hideOnCloseCB.UseVisualStyleBackColor = true;
+            verLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            verLabel.AutoSize = true;
+            verLabel.Location = new Point(12, 485);
+            verLabel.Name = "verLabel";
+            verLabel.Size = new Size(195, 32);
+            verLabel.TabIndex = 4;
+            verLabel.Text = "Version: a.b.c.123";
             // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1146, 558);
+            Controls.Add(verLabel);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(groupBox2);
@@ -155,5 +163,6 @@
         private Label label4;
         private BindingSource settingsBindingSource;
         private CheckBox hideOnCloseCB;
+        private Label verLabel;
     }
 }
