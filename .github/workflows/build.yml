@@ -34,18 +34,12 @@ jobs:
             -p:PublishSingleFile=true \
             -p:PublishTrimmed=false
             
-      # - name: Remove PDB files
-      #   shell: pwsh
-      #   run: |
-      #     Get-ChildItem publish -Filter *.pdb -Recurse | Remove-Item -Force
-
-      - name: Zip publish folder
+      - name: Get ALL files
         shell: pwsh
-        run: |
-          Compress-Archive -Path publish\* -DestinationPath DRSaveTracker-win-x64.zip
+        run: dir -Depth 4
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7.0.1
         with:
           name: DRSaveTracker-win-x64
-          path: DRSaveTracker-win-x64.zip
+          path: publish/DRSaveTracker.exe
