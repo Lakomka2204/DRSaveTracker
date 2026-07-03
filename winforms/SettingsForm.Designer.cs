@@ -38,6 +38,7 @@
             label3 = new Label();
             label4 = new Label();
             verLabel = new Label();
+            linkLabel1 = new LinkLabel();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)settingsBindingSource).BeginInit();
             groupBox2.SuspendLayout();
@@ -127,11 +128,24 @@
             verLabel.TabIndex = 4;
             verLabel.Text = "Version: a.b.c.123";
             // 
+            // linkLabel1
+            // 
+            linkLabel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            linkLabel1.AutoSize = true;
+            linkLabel1.Location = new Point(211, 517);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(92, 32);
+            linkLabel1.TabIndex = 5;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "License";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1146, 558);
+            Controls.Add(linkLabel1);
             Controls.Add(verLabel);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -164,5 +178,6 @@
         private BindingSource settingsBindingSource;
         private CheckBox hideOnCloseCB;
         private Label verLabel;
+        private LinkLabel linkLabel1;
     }
 }

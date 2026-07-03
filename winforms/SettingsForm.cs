@@ -1,4 +1,6 @@
-﻿namespace DRSaveTracker
+﻿using System.Diagnostics;
+
+namespace DRSaveTracker
 {
     public partial class SettingsForm : Form
     {
@@ -31,5 +33,13 @@
                 DataSourceUpdateMode.OnPropertyChanged);
         }
 
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = "https://github.com/Lakomka2204/DRSaveTracker/blob/main/LICENSE.txt",
+                UseShellExecute = true
+            });
+        }
     }
 }
