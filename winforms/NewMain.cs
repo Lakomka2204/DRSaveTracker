@@ -91,6 +91,8 @@ namespace DRSaveTracker
                     save.MakeBackup(backupFolder);
                 }
             }
+            if (!Directory.Exists(backupFolder))
+                Directory.CreateDirectory(backupFolder);
             var backups = Directory
                 .GetDirectories(
                     backupFolder,
@@ -136,6 +138,12 @@ namespace DRSaveTracker
             if (settings.FetchRoomNames)
                 await rmi.LoadRoomInfo(null);
             toolStripStatusLabel1.Text = "Reading save files...";
+            if (!Directory.Exists(saveFolder))
+            {
+                MessageBox.Show("You don't even have save information about DELTARUNE, at least launch it once...");
+                Application.Exit();
+                return;
+            }
             mainWatcher.Path = saveFolder;
             InitSaveInfoLV();
             toolStripStatusLabel1.Text = "Done";
