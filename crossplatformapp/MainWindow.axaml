@@ -1,0 +1,95 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="using:crossplatformapp"
+        x:DataType="local:MainWindowViewModel"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="crossplatformapp.MainWindow"
+        WindowStartupLocation="CenterScreen"
+        Title="DR Save Tracker">
+    <DockPanel>
+    <Menu 
+    DockPanel.Dock="Top"
+    BorderThickness="0,0,0,1" 
+    BorderBrush="{DynamicResource SystemControlBackgroundBaseLowBrush}"
+    FontFamily="{Binding FontFamily}"
+      >
+      <MenuItem Header="Menu">
+        <MenuItem Header="Settings"/>
+        <MenuItem Header="Hide" />
+        <Separator/>
+        <MenuItem Header="End" Command="{Binding QuitAppCommand}"/>
+      </MenuItem>
+    </Menu>
+
+    <Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemControlBackgroundBaseLowBrush}">
+<TextBlock Text="{Binding Saves.Count, StringFormat='Status: SC={0}'}"
+    FontFamily="{Binding FontFamily}"
+           Margin="4"/>
+              </Border>
+
+    <Grid ColumnDefinitions="7*,4,3*">
+      <TableView
+      Grid.Column="0"
+      SelectionMode="Single"
+      ItemsSource="{Binding Saves}"
+          FontFamily="{Binding FontFamily}"
+FontWeight="Bold"
+      >
+      <TableView.Columns>
+        <TableViewColumn Header="SLOT" Width="2*">
+          <TableViewColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock>
+                <TextBlock.Text>
+                  <MultiBinding StringFormat="Ch. {0}-{1}">
+                    <Binding Path="Chapter"/>
+                    <Binding Path="Slot" />
+                  </MultiBinding>
+                </TextBlock.Text>
+                <ToolTip.Tip>
+                  <MultiBinding StringFormat="Ch. {0}-{1}">
+                    <Binding Path="Chapter"/>
+                    <Binding Path="Slot" />
+                  </MultiBinding>
+                </ToolTip.Tip>
+              </TextBlock>
+            </DataTemplate>
+          </TableViewColumn.CellTemplate>
+        </TableViewColumn>
+        <TableViewColumn Header="NAME" Width="3*">
+          <TableViewColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding Name}"/>
+            </DataTemplate>
+          </TableViewColumn.CellTemplate>
+        </TableViewColumn>       
+        <TableViewColumn Header="PLACE" Width="4*">
+          <TableViewColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Place}" ToolTip.Tip="{Binding Place}"/>
+            </DataTemplate>
+          </TableViewColumn.CellTemplate>
+        </TableViewColumn>
+        <TableViewColumn Header="TIME" Width="2*">
+          <TableViewColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding DisplayTime}" ToolTip.Tip="{Binding DisplayTime}"/>
+            </DataTemplate>
+          </TableViewColumn.CellTemplate>
+        </TableViewColumn>
+        <TableViewColumn Header="ACCESS" Width="4*">
+          <TableViewColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding LastAccess}" ToolTip.Tip="{Binding LastAccess}"/>
+            </DataTemplate>
+          </TableViewColumn.CellTemplate>
+        </TableViewColumn>
+      </TableView.Columns>
+    </TableView>
+      <GridSplitter Grid.Column="1" Width="4"/>
+      <ContentControl Grid.Column="2"/>
+    </Grid>
+  </DockPanel>
+</Window>
