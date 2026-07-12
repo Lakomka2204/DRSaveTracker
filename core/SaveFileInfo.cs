@@ -69,30 +69,30 @@ namespace DRSTCore
         {
             if (backupFolder == null)
                 return;
+            GetBackups(backupFolder);
+        }
+        public void GetBackups(string backupFolder)
+        {
             var concreteBackupFolder = Path.Join(backupFolder, OriginalFileName);
             if (!Directory.Exists(concreteBackupFolder)) return;
+            // сделать так чтобы первый отображался как последний (latest)
             Backups = [.. Directory
                 .GetFiles(concreteBackupFolder,"filech*")
                 .Select(f => new SaveFileInfo(f, Mapper))
                 .OrderByDescending(f => f.LastWrite)];
         }
-        public void GetBackups(string backupFolder)
-        {
-            var saveFolder = Path.Join(backupFolder, OriginalFileName);
-            if (!Directory.Exists(saveFolder)) return;
-            Backups = [.. Directory
-                .GetFiles(saveFolder,"filech*")
-                .Select(f => new SaveFileInfo(f, Mapper))
-                .OrderByDescending(f => f.LastWrite)];
-        }
         public void MakeBackup(string backupFolder)
         {
-            var backupConcreteFolder = Path.Join(backupFolder, OriginalFileName);
-            if (!Directory.Exists(backupConcreteFolder))
-                Directory.CreateDirectory(backupConcreteFolder);
-            var backupName = string.Format("{0}_{1}",OriginalFileName, LastWrite.ToFileTimeUtc());
-            var backupFileName = Path.Join(backupConcreteFolder, backupName);
-            File.Copy(FileName, backupFileName,true);
+            if (FileExists)
+            {
+                var backupConcreteFolder = Path.Join(backupFolder, OriginalFileName);
+                if (!Directory.Exists(backupConcreteFolder))
+                    Directory.CreateDirectory(backupConcreteFolder);
+                var backupName = string.Format("{0}_{1}",OriginalFileName, LastWrite.ToFileTimeUtc());
+                var backupFileName = Path.Join(backupConcreteFolder, backupName);
+                File.Copy(FileName, backupFileName,true);
+            }
+            GetBackups(backupFolder);
         }
         public string RestoreToOriginal(string originalFolder)
         {

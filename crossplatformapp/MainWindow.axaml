@@ -1,10 +1,11 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:drstcore="using:DRSTCore"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="using:crossplatformapp"
         x:DataType="local:MainWindowViewModel"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
         x:Class="crossplatformapp.MainWindow"
         WindowStartupLocation="CenterScreen"
         Title="DR Save Tracker">
@@ -43,22 +44,33 @@
         FontFamily="{Binding FontFamily}"
         Margin="4"
         />
-        <Button 
+        <TextBlock 
+        Text="{Binding SelectedSave?.OriginalFileName, FallbackValue='Selected: None', StringFormat='Selected: {0}'}"
+        FontFamily="{Binding FontFamily}"
+        Margin="4"
+        />
+        <TextBlock 
+        Text="{Binding SelectedBackup?.LastWrite, FallbackValue='Selected: None', StringFormat='Selected: {0:G}'}"
+        FontFamily="{Binding FontFamily}"
+        Margin="4"
+        />
+        <!-- <Button 
         Content="Toggle enableation"
         Command="{Binding ToggleWatchingCommand}"
         FontFamily="{Binding FontFamily}"
         Margin="4"
-        />
+        /> -->
       </StackPanel>
       </Border>
 
-    <Grid ColumnDefinitions="7*,4,3*">
+    <Grid ColumnDefinitions="6*,4,4*">
       <TableView
       Grid.Column="0"
       SelectionMode="Single"
       ItemsSource="{Binding Sfw.Saves}"
-          FontFamily="{Binding FontFamily}"
-FontWeight="Bold"
+      FontFamily="{Binding FontFamily}"
+      FontWeight="Bold"
+      SelectedItem="{Binding SelectedSave, Mode=TwoWay}"
       >
       <TableView.Columns>
         <TableViewColumn Header="SLOT" Width="2*">
@@ -98,7 +110,7 @@ FontWeight="Bold"
         <TableViewColumn Header="TIME" Width="2*">
           <TableViewColumn.CellTemplate>
             <DataTemplate>
-              <TextBlock Text="{Binding PlayTime}" ToolTip.Tip="{Binding PlayTime}"/>
+              <TextBlock Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}" ToolTip.Tip="{Binding PlayTime}"/>
             </DataTemplate>
           </TableViewColumn.CellTemplate>
         </TableViewColumn>
@@ -112,7 +124,45 @@ FontWeight="Bold"
       </TableView.Columns>
     </TableView>
       <GridSplitter Grid.Column="1" Width="4"/>
-      <ContentControl Grid.Column="2"/>
+      <StackPanel Grid.Column="2">
+        <TableView
+          SelectionMode="Single"
+          ItemsSource="{Binding SelectedSave?.Backups, FallbackValue=[]}"
+          FontFamily="{Binding FontFamily}"
+          FontWeight="Bold"
+          SelectedItem="{Binding SelectedBackup, Mode=TwoWay}"
+        >
+          <TableView.Columns>
+            <TableViewColumn Header="NAME" Width="2*">
+              <TableViewColumn.CellTemplate>
+                <DataTemplate x:DataType="drstcore:SaveFileInfo">
+                  <TextBlock
+                  Text="{Binding Name}"
+                  />
+                </DataTemplate>
+              </TableViewColumn.CellTemplate>
+            </TableViewColumn>
+            <TableViewColumn Header="TIME" Width="1*">
+              <TableViewColumn.CellTemplate>
+                <DataTemplate x:DataType="drstcore:SaveFileInfo">
+                  <TextBlock
+                  Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
+                  />
+                </DataTemplate>
+              </TableViewColumn.CellTemplate>
+            </TableViewColumn>
+            <TableViewColumn Header="ACCESS" Width="3*">
+              <TableViewColumn.CellTemplate>
+                <DataTemplate x:DataType="drstcore:SaveFileInfo">
+                  <TextBlock
+                  Text="{Binding LastWrite}"
+                  />
+                </DataTemplate>
+              </TableViewColumn.CellTemplate>
+            </TableViewColumn>
+            </TableView.Columns>
+        </TableView>
+      </StackPanel>
     </Grid>
   </DockPanel>
 </Window>

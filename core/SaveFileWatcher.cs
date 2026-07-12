@@ -46,14 +46,16 @@ public partial class SaveFileWatcher : ObservableObject
             mainWatcher.EnableRaisingEvents = false;
             // do the thang
             Console.WriteLine("Something happened! {0} {1} {2}",args.ChangeType,args.FullPath,args.Name);
+            if ((args.ChangeType & (WatcherChangeTypes.Created | WatcherChangeTypes.Deleted)) != 0)
+                RefreshInfo();
             var changed = Saves.FirstOrDefault(f => f.OriginalFileName == args.Name);
             if (changed == null)
                 return;
-            // make backup
-            
-            //update ui
             int ind = Saves.IndexOf(changed);
-            changed = new(changed.FileName,rmi,BackupDirectory);
+            // make backup
+            changed = new(args.FullPath,rmi,BackupDirectory);
+            changed.MakeBackup(BackupDirectory);
+            //update ui
             Saves[ind] = changed;
             Console.WriteLine("Changed Save: {0}",changed);
         }
@@ -89,7 +91,9 @@ public partial class SaveFileWatcher : ObservableObject
             var allSaves = saves
                 .Concat(backups)
                 .GroupBy(s => s.OriginalFileName)
-                .Select(sg => sg.First());
+                .Select(sg => sg.First())
+                .OrderBy(s => s.Chapter)
+                .ThenBy(s => s.Slot);
             Saves = new ObservableCollection<SaveFileInfo>(allSaves);
     }
     private readonly RoomMapper rmi;

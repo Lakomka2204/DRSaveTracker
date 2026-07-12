@@ -20,9 +20,9 @@ public partial class MainWindowViewModel : ObservableObject
         {
             BackupDirectory = backupFolder,
             CacheDirectory = cacheFolder,
-            WatchDirectory = saveFolder
+            WatchDirectory = saveFolder,
+            IsEnabled = true,
         };
-        // sfw.IsEnabled = true;
     }
     public async Task Initialize()
     {
@@ -30,6 +30,10 @@ public partial class MainWindowViewModel : ObservableObject
     }
     [ObservableProperty]
     private SaveFileWatcher sfw;
+    [ObservableProperty]
+    private SaveFileInfo? selectedSave;
+    [ObservableProperty]
+    private SaveFileInfo? selectedBackup;
     private static readonly string saveFolder = Path.Join(
             Environment.GetFolderPath(
                 Environment.SpecialFolder.LocalApplicationData),
