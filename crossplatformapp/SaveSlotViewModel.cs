@@ -1,4 +1,5 @@
 using DRSTCore;
+namespace crossplatformapp;
 
 public class SaveSlotViewModel
 {

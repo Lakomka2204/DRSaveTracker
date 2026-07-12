@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,10 +16,20 @@ public partial class MainWindowViewModel : ObservableObject
 {
     public MainWindowViewModel()
     {
-        rmi = new(cacheFolder);
-        saves = [];
-        InitializeSaves();
+        Sfw = new()
+        {
+            BackupDirectory = backupFolder,
+            CacheDirectory = cacheFolder,
+            WatchDirectory = saveFolder
+        };
+        // sfw.IsEnabled = true;
     }
+    public async Task Initialize()
+    {
+        await Sfw.Init();
+    }
+    [ObservableProperty]
+    private SaveFileWatcher sfw;
     private static readonly string saveFolder = Path.Join(
             Environment.GetFolderPath(
                 Environment.SpecialFolder.LocalApplicationData),
@@ -33,39 +44,6 @@ public partial class MainWindowViewModel : ObservableObject
             Environment.SpecialFolder.LocalApplicationData),
         Program.AppName,
         "Cache");
-    private readonly RoomMapper rmi;
-    private async void InitializeSaves()
-    {
-        await rmi.LoadRoomInfo();
-        var saves = Directory.GetFiles(saveFolder, "filech*")
-                .Select(s => new SaveFileInfo(s, rmi))
-                .Where(s => s.FileExists);
-                Console.WriteLine("get saves {0}",saves.Count());
-        if (!Directory.Exists(backupFolder))
-        {
-            foreach (var save in saves)
-            {
-                save.MakeBackup(backupFolder);
-            }
-        }
-        if (!Directory.Exists(backupFolder))
-            Directory.CreateDirectory(backupFolder);
-        var backups = Directory
-            .GetDirectories(
-                backupFolder,
-                "filech*",
-                SearchOption.TopDirectoryOnly)
-            .Select(s => new SaveFileInfo(s, rmi));
-        var allSaves = saves
-            .Concat(backups)
-            .GroupBy(g => g.OriginalFileName)
-            .Select(g => g.First())
-            .Select(s => new SVIShort(s));
-            System.Console.WriteLine("get all saves {0}",allSaves.Count());
-        Saves = new ObservableCollection<SVIShort>(allSaves);
-    }
-    [ObservableProperty]
-    private ObservableCollection<SVIShort> saves;
     [ObservableProperty]
     private static Avalonia.Media.FontFamily fontFamily = new("fonts:DRFonts#8-bit Operator+");
     [RelayCommand]
@@ -75,5 +53,11 @@ public partial class MainWindowViewModel : ObservableObject
         {
             desktop.Shutdown(0);
         }
+    }
+    [RelayCommand]
+    private void ToggleWatching()
+    {
+        Sfw.IsEnabled = !Sfw.IsEnabled;
+        System.Console.WriteLine("Toggling thang {0}",Sfw.IsEnabled);
     }
 }

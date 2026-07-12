@@ -12,7 +12,7 @@ namespace DRSTCore
         [ObservableProperty]
         private int chapter = 0;
         [ObservableProperty]
-        private Slot slot = Slot.None;
+        private int slot = -1;
         [ObservableProperty]
         private string name = "EMPTY";
         [ObservableProperty]
@@ -42,8 +42,8 @@ namespace DRSTCore
                 // throw new ArgumentException("Filename regex unsuccessful", nameof(filename));
             OriginalFileName = match.Groups[0].Value;
             Chapter = int.Parse(match.Groups[1].Value);
-            var slot = int.Parse(match.Groups[2].Value);
-            Slot = slot == 9 ? Slot.None : (Slot)(slot % 3);
+            var slot = int.Parse(match.Groups[2].Value) + 1;
+            Slot = slot;
             FileExists = File.Exists(FileName);
             if (!FileExists)
                 return;
@@ -107,9 +107,11 @@ namespace DRSTCore
             StringBuilder sb = new();
             sb.AppendFormat("Chapter {0}\t", Chapter);
             sb.AppendFormat("Slot {0}\t", Slot.ToString());
-            sb.AppendFormat("- {0} - {1}\t", Name.PadRight(12),PlayTime);
+            sb.AppendFormat("{0} - {1}\t", Name.PadRight(12),PlayTime);
             if (RoomName != null)
                 sb.AppendFormat("- {0}({1})", RoomName,Room);
+            else
+                sb.AppendFormat("- Room id: {0}",Room);
             return sb.ToString();
         }
     }

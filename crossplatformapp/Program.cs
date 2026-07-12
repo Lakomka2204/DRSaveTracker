@@ -10,10 +10,15 @@ class Program
     // yet and stuff might break.
     public static string AppName = "DRSaveTracker";
     [STAThread]
-    public static void Main(string[] args) => BuildAvaloniaApp()
+    public static void Main(string[] args)
+    {
+        Console.WriteLine("START APP");
+        BuildAvaloniaApp()
         .StartWithClassicDesktopLifetime(args);
+    }
 
     // Avalonia configuration, don't remove; also used by visual designer.
+
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()

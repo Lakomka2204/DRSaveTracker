@@ -3,7 +3,6 @@
     public class RoomMapper
     {
         public string? CacheDirectory { get; set; }
-        public bool HasLoaded { get; set; }
         public RoomMapper()
         {
             client = new HttpClient();

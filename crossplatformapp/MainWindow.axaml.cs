@@ -7,11 +7,18 @@ namespace crossplatformapp;
 
 public partial class MainWindow : Window
 {
+    private MainWindowViewModel model;
     public MainWindow()
     {
         InitializeComponent();
-        var model = new MainWindowViewModel();
+        model = new MainWindowViewModel();
         DataContext = model;
     }
+    protected override async void OnOpened(EventArgs e)
+    {
+        base.OnOpened(e);
+        await model.Initialize();
+    }
+
 
 }

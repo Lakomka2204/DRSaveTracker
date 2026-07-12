@@ -19,6 +19,13 @@ public partial class SaveFileWatcher : ObservableObject
         rmi = new();
         saves = [];
     }
+    public async Task Init()
+    {
+        if (CacheDirectory != null)
+            await rmi.LoadRoomInfo();
+        if (WatchDirectory != string.Empty)
+            RefreshInfo();
+    }
     ~SaveFileWatcher()
     {
         if (mainWatcher != null)
@@ -34,7 +41,26 @@ public partial class SaveFileWatcher : ObservableObject
     }
     private void WatcherChanged(object sender, FileSystemEventArgs args)
     {
-        
+        try
+        {
+            mainWatcher.EnableRaisingEvents = false;
+            // do the thang
+            Console.WriteLine("Something happened! {0} {1} {2}",args.ChangeType,args.FullPath,args.Name);
+            var changed = Saves.FirstOrDefault(f => f.OriginalFileName == args.Name);
+            if (changed == null)
+                return;
+            // make backup
+            
+            //update ui
+            int ind = Saves.IndexOf(changed);
+            changed = new(changed.FileName,rmi,BackupDirectory);
+            Saves[ind] = changed;
+            Console.WriteLine("Changed Save: {0}",changed);
+        }
+        finally
+        {
+            mainWatcher.EnableRaisingEvents = true;
+        }
     }
     public void RefreshInfo()
     {
@@ -73,26 +99,22 @@ public partial class SaveFileWatcher : ObservableObject
     public bool IsEnabled
     {
         get { return mainWatcher.EnableRaisingEvents; }
-        set { mainWatcher.EnableRaisingEvents = value; }
+        set 
+        { 
+            mainWatcher.EnableRaisingEvents = value;
+            OnPropertyChanged(nameof(IsEnabled));
+        }
     }
     
     public string WatchDirectory 
     { 
         get { return mainWatcher.Path; } 
-        set
-        {
-            mainWatcher.Path = value;
-            RefreshInfo();
-        }
+        set { mainWatcher.Path = value; }
     }
     public string BackupDirectory { get; set; } = string.Empty;
     public string? CacheDirectory 
     { 
         get { return rmi.CacheDirectory;}
-        set
-        { 
-            rmi.CacheDirectory = value; 
-            rmi.LoadRoomInfo().GetAwaiter().GetResult();
-        }
+        set{ rmi.CacheDirectory = value; }
     }
 }

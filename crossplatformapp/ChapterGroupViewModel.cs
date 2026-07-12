@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+namespace crossplatformapp;
 
 public class ChapterGroupViewModel
 {

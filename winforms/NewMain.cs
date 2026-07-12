@@ -133,7 +133,7 @@ namespace DRSaveTracker
             listView2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             toolStripStatusLabel1.Text = "Loading room info...";
             if (settings.FetchRoomNames)
-                await rmi.LoadRoomInfo(null);
+                await rmi.LoadRoomInfo();
             toolStripStatusLabel1.Text = "Reading save files...";
             if (!Directory.Exists(saveFolder))
             {

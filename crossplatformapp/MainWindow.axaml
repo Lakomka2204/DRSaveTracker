@@ -23,17 +23,40 @@
       </MenuItem>
     </Menu>
 
-    <Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemControlBackgroundBaseLowBrush}">
-<TextBlock Text="{Binding Saves.Count, StringFormat='Status: SC={0}'}"
-    FontFamily="{Binding FontFamily}"
-           Margin="4"/>
-              </Border>
+    <Border 
+      DockPanel.Dock="Bottom" 
+      BorderThickness="0,1,0,0" 
+      BorderBrush="{DynamicResource SystemControlBackgroundBaseLowBrush}">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock 
+        Text="Status"
+        FontFamily="{Binding FontFamily}"
+        Margin="4"
+        />
+        <TextBlock 
+        Text="{Binding Sfw.Saves.Count, StringFormat='Count: {0}'}"
+        FontFamily="{Binding FontFamily}"
+        Margin="4"
+        />
+        <TextBlock 
+        Text="{Binding Sfw.IsEnabled, StringFormat='Watcher Enabled: {0}'}"
+        FontFamily="{Binding FontFamily}"
+        Margin="4"
+        />
+        <Button 
+        Content="Toggle enableation"
+        Command="{Binding ToggleWatchingCommand}"
+        FontFamily="{Binding FontFamily}"
+        Margin="4"
+        />
+      </StackPanel>
+      </Border>
 
     <Grid ColumnDefinitions="7*,4,3*">
       <TableView
       Grid.Column="0"
       SelectionMode="Single"
-      ItemsSource="{Binding Saves}"
+      ItemsSource="{Binding Sfw.Saves}"
           FontFamily="{Binding FontFamily}"
 FontWeight="Bold"
       >
@@ -68,21 +91,21 @@ FontWeight="Bold"
         <TableViewColumn Header="PLACE" Width="4*">
           <TableViewColumn.CellTemplate>
             <DataTemplate>
-              <TextBlock Text="{Binding Place}" ToolTip.Tip="{Binding Place}"/>
+              <TextBlock Text="{Binding RoomName}" ToolTip.Tip="{Binding RoomName}"/>
             </DataTemplate>
           </TableViewColumn.CellTemplate>
         </TableViewColumn>
         <TableViewColumn Header="TIME" Width="2*">
           <TableViewColumn.CellTemplate>
             <DataTemplate>
-              <TextBlock Text="{Binding DisplayTime}" ToolTip.Tip="{Binding DisplayTime}"/>
+              <TextBlock Text="{Binding PlayTime}" ToolTip.Tip="{Binding PlayTime}"/>
             </DataTemplate>
           </TableViewColumn.CellTemplate>
         </TableViewColumn>
         <TableViewColumn Header="ACCESS" Width="4*">
           <TableViewColumn.CellTemplate>
             <DataTemplate>
-              <TextBlock Text="{Binding LastAccess}" ToolTip.Tip="{Binding LastAccess}"/>
+              <TextBlock Text="{Binding LastWrite, StringFormat=g}" ToolTip.Tip="{Binding LastWrite, StringFormat=R}"/>
             </DataTemplate>
           </TableViewColumn.CellTemplate>
         </TableViewColumn>
