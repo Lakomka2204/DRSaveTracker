@@ -18,12 +18,13 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="MessageBox.Avalonia" Version="12.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\core\DRSTCore.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Include="Fonts\*.otf"/>
+    <AvaloniaResource Include="Fonts\*.otf" />
   </ItemGroup>
 </Project>

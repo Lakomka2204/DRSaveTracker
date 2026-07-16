@@ -76,10 +76,12 @@ namespace DRSTCore
             var concreteBackupFolder = Path.Join(backupFolder, OriginalFileName);
             if (!Directory.Exists(concreteBackupFolder)) return;
             // сделать так чтобы первый отображался как последний (latest)
+            
             Backups = [.. Directory
                 .GetFiles(concreteBackupFolder,"filech*")
                 .Select(f => new SaveFileInfo(f, Mapper))
-                .OrderByDescending(f => f.LastWrite)];
+                .OrderByDescending(f => f.LastWrite == LastWrite)
+                .ThenByDescending(f => f.LastWrite)];
         }
         public void MakeBackup(string backupFolder)
         {

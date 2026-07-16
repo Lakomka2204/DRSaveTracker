@@ -6,23 +6,31 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Themes.Fluent;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DRSTCore;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Base;
+using MsBox.Avalonia.Models;
 namespace crossplatformapp;
 
 public partial class MainWindowViewModel : ObservableObject
 {
-    public MainWindowViewModel()
+    private readonly Window mainWindow;
+    public MainWindowViewModel(Window window)
     {
+        mainWindow = window;
         Sfw = new()
         {
-            BackupDirectory = backupFolder,
-            CacheDirectory = cacheFolder,
-            WatchDirectory = saveFolder,
+            BackupDirectory = PlatformPaths.BackupDirectory,
+            CacheDirectory = PlatformPaths.CacheDirectory,
+            WatchDirectory = PlatformPaths.SaveDirectory,
             IsEnabled = true,
         };
+        Menu = new();
     }
     public async Task Initialize()
     {
@@ -34,20 +42,6 @@ public partial class MainWindowViewModel : ObservableObject
     private SaveFileInfo? selectedSave;
     [ObservableProperty]
     private SaveFileInfo? selectedBackup;
-    private static readonly string saveFolder = Path.Join(
-            Environment.GetFolderPath(
-                Environment.SpecialFolder.LocalApplicationData),
-            "DELTARUNE");
-    private static readonly string backupFolder = Path.Join(
-        Environment.GetFolderPath(
-            Environment.SpecialFolder.LocalApplicationData),
-        Program.AppName,
-        "Backups");
-    private static readonly string cacheFolder = Path.Join(
-        Environment.GetFolderPath(
-            Environment.SpecialFolder.LocalApplicationData),
-        Program.AppName,
-        "Cache");
     [ObservableProperty]
     private static Avalonia.Media.FontFamily fontFamily = new("fonts:DRFonts#8-bit Operator+");
     [RelayCommand]
@@ -62,6 +56,63 @@ public partial class MainWindowViewModel : ObservableObject
     private void ToggleWatching()
     {
         Sfw.IsEnabled = !Sfw.IsEnabled;
-        System.Console.WriteLine("Toggling thang {0}",Sfw.IsEnabled);
+        Console.WriteLine("Toggling thang {0}", Sfw.IsEnabled);
     }
+    [RelayCommand]
+    private async Task RestoreSelectedBackup()
+    {
+        if (SelectedBackup == null) return;
+        if (SelectedSave == null) return;
+        if (SelectedBackup.LastWrite == SelectedSave.LastWrite)
+        {
+            await MessageBoxes.GetOwnMBox(
+                "Can't restore this backup",
+                "This is the latest backup, no need to restore", 
+                MsBox.Avalonia.Enums.Icon.Warning
+            )
+            .ShowAsPopupAsync(mainWindow);
+            return;
+        }
+        var mbox = await MessageBoxes.GetOwnMboxYesNo(
+            "Restore backup?",
+            string.Format(
+                "Do you want to restore backup from {0:G} to Ch. {1} slot {2}",
+                SelectedBackup.LastWrite,
+                SelectedBackup.Chapter,
+                SelectedBackup.Slot
+                ),
+                MsBox.Avalonia.Enums.Icon.Question
+        ).ShowAsPopupAsync(mainWindow);
+        if (mbox == "Yes")
+        {
+            Sfw.IsEnabled = false;
+            var original = SelectedBackup.RestoreToOriginal(PlatformPaths.SaveDirectory);
+            Sfw.UpdateFileInfo(original);
+            Sfw.IsEnabled = true;
+        }
+    }
+    [RelayCommand]
+    private async Task DeleteBackup()
+    {
+        if (SelectedBackup == null) return;
+        if (SelectedSave == null) return;
+        var mbox = await MessageBoxes
+            .GetOwnMboxYesNo(
+                "Delete backup?",
+                string.Format(
+                    "Do you want to delete backup from {0:G}?\nThis action is irreversible.",
+                    SelectedBackup.LastWrite
+                ),
+                MsBox.Avalonia.Enums.Icon.Question
+            )
+            .ShowAsPopupAsync(mainWindow);
+        if (mbox == "Yes")
+        {
+            File.Delete(SelectedBackup.FileName);
+            SelectedSave.GetBackups(PlatformPaths.BackupDirectory);
+            System.Console.WriteLine("hafta delete it..");
+        }
+
+    }
+    public MenuViewModel Menu { get; }
 }

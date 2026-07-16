@@ -12,9 +12,10 @@ class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        Console.WriteLine("START APP");
+        Console.WriteLine("Main entry point start");
         BuildAvaloniaApp()
         .StartWithClassicDesktopLifetime(args);
+        Console.WriteLine("Main entry point end");
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.

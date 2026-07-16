@@ -39,6 +39,21 @@ public partial class SaveFileWatcher : ObservableObject
         Saves?.Clear();
         
     }
+    public void UpdateFileInfo(string filename,string? name=null)
+    {
+        Console.WriteLine("Called UFI w/ {0} {1}",filename,name);
+        name ??= Path.GetFileName(filename);
+        var changed = Saves.FirstOrDefault(f => f.OriginalFileName == name);
+            if (changed == null)
+                return;
+            int ind = Saves.IndexOf(changed);
+            // make backup
+            changed = new(filename,rmi,BackupDirectory);
+            changed.MakeBackup(BackupDirectory);
+            //update ui
+            Saves[ind] = changed;
+            Console.WriteLine("Changed Save: {0}",changed);
+    }
     private void WatcherChanged(object sender, FileSystemEventArgs args)
     {
         try
@@ -48,16 +63,7 @@ public partial class SaveFileWatcher : ObservableObject
             Console.WriteLine("Something happened! {0} {1} {2}",args.ChangeType,args.FullPath,args.Name);
             if ((args.ChangeType & (WatcherChangeTypes.Created | WatcherChangeTypes.Deleted)) != 0)
                 RefreshInfo();
-            var changed = Saves.FirstOrDefault(f => f.OriginalFileName == args.Name);
-            if (changed == null)
-                return;
-            int ind = Saves.IndexOf(changed);
-            // make backup
-            changed = new(args.FullPath,rmi,BackupDirectory);
-            changed.MakeBackup(BackupDirectory);
-            //update ui
-            Saves[ind] = changed;
-            Console.WriteLine("Changed Save: {0}",changed);
+            UpdateFileInfo(args.FullPath,args.Name);
         }
         finally
         {

@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="using:crossplatformapp"
         x:DataType="local:MainWindowViewModel"
-        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="450"
         x:Class="crossplatformapp.MainWindow"
+        x:Name="ROOTS"
         WindowStartupLocation="CenterScreen"
         Title="DR Save Tracker">
     <DockPanel>
@@ -14,13 +15,30 @@
     DockPanel.Dock="Top"
     BorderThickness="0,0,0,1" 
     BorderBrush="{DynamicResource SystemControlBackgroundBaseLowBrush}"
-    FontFamily="{Binding FontFamily}"
+    FontFamily="{StaticResource ResourceKey=DRFontFamily}"
+    DataContext="{Binding Menu}"
       >
-      <MenuItem Header="Menu">
-        <MenuItem Header="Settings"/>
-        <MenuItem Header="Hide" />
+      <MenuItem Header="_Menu">
+        <MenuItem Header="_Settings"/>
+        <MenuItem Header="_Hide" />
         <Separator/>
-        <MenuItem Header="End" Command="{Binding QuitAppCommand}"/>
+        <MenuItem Header="_End" Command="{Binding QuitAppCommand}"/>
+      </MenuItem>
+      <MenuItem Header="_View">
+        <MenuItem Header="_Display style">
+          <MenuItem 
+            Header="_Normal"
+            ToggleType="Radio"
+            GroupName="Density"
+            IsChecked="{Binding NormalDensity, Mode=TwoWay}" 
+          />
+          <MenuItem 
+            Header="_Compact"
+            ToggleType="Radio"
+            GroupName="Density"
+            IsChecked="{Binding CompactDensity, Mode=TwoWay}" 
+          />
+        </MenuItem>
       </MenuItem>
     </Menu>
 
@@ -30,34 +48,24 @@
       BorderBrush="{DynamicResource SystemControlBackgroundBaseLowBrush}">
       <StackPanel Orientation="Horizontal">
         <TextBlock 
-        Text="Status"
-        FontFamily="{Binding FontFamily}"
+        Text="{Binding Sfw.IsEnabled, StringFormat='Watcher Enabled: {0}', Converter={StaticResource BoolToYesNoConverter}}"
+        FontFamily="{StaticResource ResourceKey=DRFontFamily}"
         Margin="4"
         />
         <TextBlock 
-        Text="{Binding Sfw.Saves.Count, StringFormat='Count: {0}'}"
-        FontFamily="{Binding FontFamily}"
+        Text="{Binding SelectedSave.OriginalFileName, FallbackValue='Selected save: None', StringFormat='Selected save: {0}'}"
+        FontFamily="{StaticResource ResourceKey=DRFontFamily}"
         Margin="4"
         />
         <TextBlock 
-        Text="{Binding Sfw.IsEnabled, StringFormat='Watcher Enabled: {0}'}"
-        FontFamily="{Binding FontFamily}"
-        Margin="4"
-        />
-        <TextBlock 
-        Text="{Binding SelectedSave?.OriginalFileName, FallbackValue='Selected: None', StringFormat='Selected: {0}'}"
-        FontFamily="{Binding FontFamily}"
-        Margin="4"
-        />
-        <TextBlock 
-        Text="{Binding SelectedBackup?.LastWrite, FallbackValue='Selected: None', StringFormat='Selected: {0:G}'}"
-        FontFamily="{Binding FontFamily}"
+        Text="{Binding SelectedBackup.LastWrite, FallbackValue='Selected backup from: Never', StringFormat='Selected backup from: {0:G}'}"
+        FontFamily="{StaticResource ResourceKey=DRFontFamily}"
         Margin="4"
         />
         <!-- <Button 
         Content="Toggle enableation"
         Command="{Binding ToggleWatchingCommand}"
-        FontFamily="{Binding FontFamily}"
+        FontFamily="{StaticResource ResourceKey=DRFontFamily}"
         Margin="4"
         /> -->
       </StackPanel>
@@ -68,15 +76,20 @@
       Grid.Column="0"
       SelectionMode="Single"
       ItemsSource="{Binding Sfw.Saves}"
-      FontFamily="{Binding FontFamily}"
+      FontFamily="{StaticResource ResourceKey=DRFontFamily}"
       FontWeight="Bold"
       SelectedItem="{Binding SelectedSave, Mode=TwoWay}"
       >
       <TableView.Columns>
-        <TableViewColumn Header="SLOT" Width="2*">
+        <TableViewColumn 
+        Header="SLOT" 
+        Width="2*"
+        >
           <TableViewColumn.CellTemplate>
             <DataTemplate>
-              <TextBlock>
+              <TextBlock
+              Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
+              >
                 <TextBlock.Text>
                   <MultiBinding StringFormat="Ch. {0}-{1}">
                     <Binding Path="Chapter"/>
@@ -96,39 +109,61 @@
         <TableViewColumn Header="NAME" Width="3*">
           <TableViewColumn.CellTemplate>
             <DataTemplate>
-              <TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding Name}"/>
+              <TextBlock 
+              Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
+              Text="{Binding Name}" 
+              ToolTip.Tip="{Binding Name}"
+              />
             </DataTemplate>
           </TableViewColumn.CellTemplate>
         </TableViewColumn>       
         <TableViewColumn Header="PLACE" Width="4*">
           <TableViewColumn.CellTemplate>
             <DataTemplate>
-              <TextBlock Text="{Binding RoomName}" ToolTip.Tip="{Binding RoomName}"/>
+              <TextBlock 
+              Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
+              
+              Text="{Binding RoomName}" 
+              ToolTip.Tip="{Binding RoomName}"
+              />
             </DataTemplate>
           </TableViewColumn.CellTemplate>
         </TableViewColumn>
         <TableViewColumn Header="TIME" Width="2*">
           <TableViewColumn.CellTemplate>
             <DataTemplate>
-              <TextBlock Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}" ToolTip.Tip="{Binding PlayTime}"/>
+              <TextBlock 
+              Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
+              Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}" 
+              ToolTip.Tip="{Binding PlayTime}"
+              />
             </DataTemplate>
           </TableViewColumn.CellTemplate>
         </TableViewColumn>
         <TableViewColumn Header="ACCESS" Width="4*">
           <TableViewColumn.CellTemplate>
             <DataTemplate>
-              <TextBlock Text="{Binding LastWrite, StringFormat=g}" ToolTip.Tip="{Binding LastWrite, StringFormat=R}"/>
+              <TextBlock 
+              Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
+              Text="{Binding LastWrite, StringFormat=g}" 
+              ToolTip.Tip="{Binding LastWrite, StringFormat=R}"
+              />
             </DataTemplate>
           </TableViewColumn.CellTemplate>
         </TableViewColumn>
       </TableView.Columns>
     </TableView>
       <GridSplitter Grid.Column="1" Width="4"/>
-      <StackPanel Grid.Column="2">
+      <Grid 
+      Grid.Column="2" 
+      RowDefinitions="*,Auto"
+      
+      >
         <TableView
+          Grid.Row="0"
           SelectionMode="Single"
           ItemsSource="{Binding SelectedSave?.Backups, FallbackValue=[]}"
-          FontFamily="{Binding FontFamily}"
+          FontFamily="{StaticResource ResourceKey=DRFontFamily}"
           FontWeight="Bold"
           SelectedItem="{Binding SelectedBackup, Mode=TwoWay}"
         >
@@ -138,16 +173,47 @@
                 <DataTemplate x:DataType="drstcore:SaveFileInfo">
                   <TextBlock
                   Text="{Binding Name}"
-                  />
+                  >
+                  <TextBlock.Foreground>
+                    <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
+                      <Binding ElementName="ROOTS" Path="DataContext.SelectedSave"/>
+                      <Binding/>
+                    </MultiBinding>
+                  </TextBlock.Foreground>
+                  
+                </TextBlock>
                 </DataTemplate>
               </TableViewColumn.CellTemplate>
             </TableViewColumn>
-            <TableViewColumn Header="TIME" Width="1*">
+            <TableViewColumn Header="PLACE" Width="3*">
+              <TableViewColumn.CellTemplate>
+                <DataTemplate x:DataType="drstcore:SaveFileInfo">
+                  <TextBlock
+                  Text="{Binding RoomName}"
+                  >
+                  <TextBlock.Foreground>
+                    <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
+                      <Binding ElementName="ROOTS" Path="DataContext.SelectedSave"/>
+                      <Binding/>
+                    </MultiBinding>
+                  </TextBlock.Foreground>
+                </TextBlock>
+                </DataTemplate>
+              </TableViewColumn.CellTemplate>
+            </TableViewColumn>
+            <TableViewColumn Header="TIME" Width="2*">
               <TableViewColumn.CellTemplate>
                 <DataTemplate x:DataType="drstcore:SaveFileInfo">
                   <TextBlock
                   Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
-                  />
+                  >
+                <TextBlock.Foreground>
+                    <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
+                      <Binding ElementName="ROOTS" Path="DataContext.SelectedSave"/>
+                      <Binding/>
+                    </MultiBinding>
+                  </TextBlock.Foreground>
+                </TextBlock>
                 </DataTemplate>
               </TableViewColumn.CellTemplate>
             </TableViewColumn>
@@ -156,13 +222,36 @@
                 <DataTemplate x:DataType="drstcore:SaveFileInfo">
                   <TextBlock
                   Text="{Binding LastWrite}"
-                  />
+                  >
+                  <TextBlock.Foreground>
+                    <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
+                      <Binding ElementName="ROOTS" Path="DataContext.SelectedSave"/>
+                      <Binding/>
+                    </MultiBinding>
+                  </TextBlock.Foreground>
+                </TextBlock>
                 </DataTemplate>
               </TableViewColumn.CellTemplate>
             </TableViewColumn>
             </TableView.Columns>
         </TableView>
-      </StackPanel>
+        <StackPanel 
+        Grid.Row="1"
+        Orientation="Horizontal" 
+        IsVisible="{Binding SelectedBackup, Converter={StaticResource NullToBoolConverter}}"
+        >
+          <Button 
+          Content="Restore"
+          Command="{Binding RestoreSelectedBackupCommand}"
+          FontFamily="{StaticResource ResourceKey=DRFontFamily}"
+          />
+          <Button 
+          Content="Delete"
+          Command="{Binding DeleteBackupCommand}"
+          FontFamily="{StaticResource ResourceKey=DRFontFamily}"
+          />
+          </StackPanel>
+      </Grid>
     </Grid>
   </DockPanel>
 </Window>

@@ -11,7 +11,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        model = new MainWindowViewModel();
+        model = new MainWindowViewModel(this);
         DataContext = model;
     }
     protected override async void OnOpened(EventArgs e)

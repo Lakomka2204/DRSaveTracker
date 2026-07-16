@@ -6,9 +6,14 @@
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Styles>
-        <FluentTheme DensityStyle="Compact"/>
+        <FluentTheme DensityStyle="Normal"/>
     </Application.Styles>
     <Application.Resources>
             <local:TimeConverter x:Key="TimeConverter"/>
+            <local:NullToBoolConverter x:Key="NullToBoolConverter"/>
+            <local:ChapterColorConverter x:Key="ChapterColorConverter"/>
+            <local:LatestBackupColorConverter x:Key="LatestBackupColorConverter"/>
+            <local:BoolToYesNoConverter x:Key="BoolToYesNoConverter"/>
+            <FontFamily x:Key="DRFontFamily">fonts:DRFonts#8-bit Operator+, fonts:DRFonts#JF Dot Shinonome Gothic 14</FontFamily>
     </Application.Resources>
 </Application>
