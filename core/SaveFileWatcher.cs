@@ -93,7 +93,7 @@ public partial class SaveFileWatcher : ObservableObject
                 BackupDirectory,
                 filePattern,
                 SearchOption.TopDirectoryOnly)
-            .Select(d => new SaveFileInfo(d,rmi));
+            .Select(d => new SaveFileInfo(d,rmi,BackupDirectory));
             var allSaves = saves
                 .Concat(backups)
                 .GroupBy(s => s.OriginalFileName)

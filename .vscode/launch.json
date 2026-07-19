@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Avalonia: crossplatformapp",
+            "name": "Avalonia App",
             "type": "dotnet",
             "request": "launch",
-            "projectPath": "${workspaceFolder}/crossplatformapp/crossplatformapp.csproj"
+            "projectPath": "${workspaceFolder}/crossplatformapp/crossplatformapp.csproj",
         }
     ]
 }

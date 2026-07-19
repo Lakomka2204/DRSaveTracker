@@ -16,7 +16,9 @@ public class TimeConverter : IValueConverter
     {
         if (value is TimeSpan time)
         {
-            return $"{(int)time.TotalHours:D2}:{time.Minutes:D2}:{time.Seconds:D2}";
+            if (time == TimeSpan.Zero)
+                return "--:--";
+            return $"{(int)time.TotalHours}:{time.Minutes:D2}:{time.Seconds:D2}";
         }
         else 
             return string.Empty;

@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using System;
 
 namespace crossplatformapp;
@@ -12,12 +13,17 @@ class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        Console.WriteLine("Main entry point start");
+        Console.WriteLine("Main entry point start, args: {0}",string.Join(' ',args));
         BuildAvaloniaApp()
-        .StartWithClassicDesktopLifetime(args);
+        .StartWithClassicDesktopLifetime(args, Avalonia.Controls.ShutdownMode.OnExplicitShutdown);
         Console.WriteLine("Main entry point end");
     }
-
+    public static IClassicDesktopStyleApplicationLifetime? GetLife()
+    {
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        return desktop;
+        else return null;
+    }
     // Avalonia configuration, don't remove; also used by visual designer.
 
     public static AppBuilder BuildAvaloniaApp()

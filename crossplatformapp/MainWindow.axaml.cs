@@ -10,15 +10,18 @@ public partial class MainWindow : Window
     private MainWindowViewModel model;
     public MainWindow()
     {
-        InitializeComponent();
         model = new MainWindowViewModel(this);
         DataContext = model;
+        InitializeComponent();
     }
+    private bool initialized = false;
     protected override async void OnOpened(EventArgs e)
     {
         base.OnOpened(e);
-        await model.Initialize();
+        if (!initialized)
+        {
+            await model.Initialize();
+            initialized = true;
+        }
     }
-
-
 }

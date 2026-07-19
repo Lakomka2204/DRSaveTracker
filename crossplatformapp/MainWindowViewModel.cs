@@ -58,6 +58,7 @@ public partial class MainWindowViewModel : ObservableObject
         Sfw.IsEnabled = !Sfw.IsEnabled;
         Console.WriteLine("Toggling thang {0}", Sfw.IsEnabled);
     }
+    
     [RelayCommand]
     private async Task RestoreSelectedBackup()
     {
@@ -73,13 +74,20 @@ public partial class MainWindowViewModel : ObservableObject
             .ShowAsPopupAsync(mainWindow);
             return;
         }
+        TimeConverter tc = new();
         var mbox = await MessageBoxes.GetOwnMboxYesNo(
             "Restore backup?",
             string.Format(
-                "Do you want to restore backup from {0:G} to Ch. {1} slot {2}",
-                SelectedBackup.LastWrite,
+                "Do you want to restore this backup to Ch. {0} slot {1}?\n"
+                +"{2} {3} -> {4} {5}",
                 SelectedBackup.Chapter,
-                SelectedBackup.Slot
+                SelectedBackup.Slot,
+                SelectedBackup.Name,
+                tc.Convert(SelectedBackup.PlayTime
+                ,typeof(string),null,CultureInfo.CurrentCulture),
+                SelectedSave.Name,
+                tc.Convert(SelectedSave.PlayTime
+                ,typeof(string),null,CultureInfo.CurrentCulture)
                 ),
                 MsBox.Avalonia.Enums.Icon.Question
         ).ShowAsPopupAsync(mainWindow);

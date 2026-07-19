@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "normal": {
+      "commandName": "Project"
+    },
+    "silent": {
+      "commandName": "Project",
+      "commandLineArgs": "-s"
+    }
+  }
+}

@@ -37,11 +37,14 @@ public partial class MenuViewModel : ObservableObject
             theme.DensityStyle = density;
     }
     [RelayCommand]
-    private static void QuitApp()
+    private static void HideWindow()
     {
-        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.Shutdown(0);
-        }
+        Program.GetLife()?.MainWindow?.Hide();
+    }
+    
+    [RelayCommand]
+    internal static void QuitApp()
+    {
+        Program.GetLife()?.Shutdown(0);
     }
 }

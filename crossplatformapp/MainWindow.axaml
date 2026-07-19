@@ -9,7 +9,9 @@
         x:Class="crossplatformapp.MainWindow"
         x:Name="ROOTS"
         WindowStartupLocation="CenterScreen"
-        Title="DR Save Tracker">
+        Icon="/Assets/icon.ico"
+        Title="DR Save Tracker"
+        >
     <DockPanel>
     <Menu 
     DockPanel.Dock="Top"
@@ -20,7 +22,10 @@
       >
       <MenuItem Header="_Menu">
         <MenuItem Header="_Settings"/>
-        <MenuItem Header="_Hide" />
+        <MenuItem 
+        Header="_Hide"
+        Command="{Binding HideWindowCommand}"
+        />
         <Separator/>
         <MenuItem Header="_End" Command="{Binding QuitAppCommand}"/>
       </MenuItem>
@@ -48,17 +53,29 @@
       BorderBrush="{DynamicResource SystemControlBackgroundBaseLowBrush}">
       <StackPanel Orientation="Horizontal">
         <TextBlock 
-        Text="{Binding Sfw.IsEnabled, StringFormat='Watcher Enabled: {0}', Converter={StaticResource BoolToYesNoConverter}}"
+        Text="{Binding 
+        Path=Sfw.IsEnabled, 
+        StringFormat='Watcher Enabled: {0}', 
+        Converter={StaticResource BoolToYesNoConverter}
+        }"
         FontFamily="{StaticResource ResourceKey=DRFontFamily}"
         Margin="4"
         />
         <TextBlock 
-        Text="{Binding SelectedSave.OriginalFileName, FallbackValue='Selected save: None', StringFormat='Selected save: {0}'}"
+        Text="{Binding 
+        Path=SelectedSave.OriginalFileName, 
+        StringFormat='Selected save: {0}',
+        FallbackValue='Selected save: None'
+        }"
         FontFamily="{StaticResource ResourceKey=DRFontFamily}"
         Margin="4"
         />
         <TextBlock 
-        Text="{Binding SelectedBackup.LastWrite, FallbackValue='Selected backup from: Never', StringFormat='Selected backup from: {0:G}'}"
+        Text="{Binding 
+        Path=SelectedBackup.LastWrite, 
+        FallbackValue='Selected backup from: Never', 
+        StringFormat='Selected backup from: {0:G}'
+        }"
         FontFamily="{StaticResource ResourceKey=DRFontFamily}"
         Margin="4"
         />
