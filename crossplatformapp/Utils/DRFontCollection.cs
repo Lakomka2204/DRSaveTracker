@@ -1,5 +1,6 @@
 using System;
 using Avalonia.Media.Fonts;
+namespace crossplatformapp.Utils;
 
 public sealed class DRFontCollection : EmbeddedFontCollection
 {

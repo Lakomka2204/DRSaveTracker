@@ -1,20 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Themes.Fluent;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using crossplatformapp.Utils;
 using DRSTCore;
-using MsBox.Avalonia;
-using MsBox.Avalonia.Base;
-using MsBox.Avalonia.Models;
 namespace crossplatformapp;
 
 public partial class MainWindowViewModel : ObservableObject
@@ -120,7 +114,6 @@ public partial class MainWindowViewModel : ObservableObject
             SelectedSave.GetBackups(PlatformPaths.BackupDirectory);
             System.Console.WriteLine("hafta delete it..");
         }
-
     }
     public MenuViewModel Menu { get; }
 }

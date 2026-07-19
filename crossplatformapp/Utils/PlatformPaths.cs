@@ -2,11 +2,10 @@ using System;
 using System.IO;
 
 
-namespace crossplatformapp;
+namespace crossplatformapp.Utils;
 
 public static class PlatformPaths
 {
-    private static readonly string GameName = "DELTARUNE";
     public static string SaveDirectory
     {
         get
@@ -15,7 +14,7 @@ public static class PlatformPaths
                 return Path.Join(
             Environment.GetFolderPath(
                 Environment.SpecialFolder.LocalApplicationData),
-            GameName);
+            Program.GameName);
             else if (OperatingSystem.IsLinux())
                 throw new NotImplementedException("AAAAAAAAAAAAAA test on linux you moron");
             else if (OperatingSystem.IsMacOS())
@@ -46,5 +45,9 @@ public static class PlatformPaths
     public static string CacheDirectory
     {
         get { return Path.Join(BaseDirectory, "Cache"); }
+    }
+    public static string SettingsLocation
+    {
+        get { return Path.Join(BaseDirectory,"Settings.json"); }
     }
 }

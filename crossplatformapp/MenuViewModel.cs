@@ -1,6 +1,6 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Themes.Fluent;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -41,7 +41,12 @@ public partial class MenuViewModel : ObservableObject
     {
         Program.GetLife()?.MainWindow?.Hide();
     }
-    
+    [RelayCommand]
+    private static async Task OpenSettings()
+    {
+        SettingsWindow sw =new();
+        await sw.ShowDialog(Program.GetLife()?.MainWindow!);
+    }
     [RelayCommand]
     internal static void QuitApp()
     {

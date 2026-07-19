@@ -4,7 +4,7 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Base;
 using MsBox.Avalonia.Models;
 
-namespace crossplatformapp;
+namespace crossplatformapp.Utils;
 
 public static class MessageBoxes
 {

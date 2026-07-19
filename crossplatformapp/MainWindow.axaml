@@ -6,6 +6,8 @@
         xmlns:local="using:crossplatformapp"
         x:DataType="local:MainWindowViewModel"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="450"
+        Width="950"
+        Height="500"
         x:Class="crossplatformapp.MainWindow"
         x:Name="ROOTS"
         WindowStartupLocation="CenterScreen"
@@ -21,7 +23,10 @@
     DataContext="{Binding Menu}"
       >
       <MenuItem Header="_Menu">
-        <MenuItem Header="_Settings"/>
+        <MenuItem 
+        Header="_Settings"
+        Command="{Binding OpenSettingsCommand}"
+        />
         <MenuItem 
         Header="_Hide"
         Command="{Binding HideWindowCommand}"

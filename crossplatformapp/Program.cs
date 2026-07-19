@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using crossplatformapp.Utils;
 using System;
 
 namespace crossplatformapp;
@@ -9,7 +10,8 @@ class Program
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
-    public static string AppName = "DRSaveTracker";
+    public static readonly string GameName = "DELTARUNE";
+    public static readonly string AppName = "DRSaveTracker";
     [STAThread]
     public static void Main(string[] args)
     {

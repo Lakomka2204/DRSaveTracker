@@ -1,12 +1,13 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Notifications;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.Input;
+using crossplatformapp.Utils;
 
 namespace crossplatformapp;
 
@@ -33,7 +34,6 @@ public partial class App : Application
     {
         // if (_reallyExit)
         //     return;
-        System.Console.WriteLine("close reason {0} programaticaly {1}",args.CloseReason,args.IsProgrammatic);
         if (args.CloseReason == WindowCloseReason.ApplicationShutdown)
             return;
         args.Cancel = true;
@@ -70,6 +70,14 @@ public partial class App : Application
         if (_trayIcon == null)
             return;
         _trayIcon.IsVisible = !window.IsVisible;
+        if (!_trayIcon.IsVisible)
+        {
+        Notification nf = new("Hello","im zelensky", NotificationType.Information);
+        System.Console.WriteLine("showing notif");
+        WindowNotificationManager nwm = new(_window);
+        nwm.Show(nf);
+        }
+        
     }
     public override void OnFrameworkInitializationCompleted()
     {
