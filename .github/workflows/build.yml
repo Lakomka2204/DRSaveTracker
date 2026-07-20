@@ -57,8 +57,8 @@ jobs:
             -p:DebugType=None \
             -p:DebugSymbols=false \
             -p:PublishTrimmed=false \
-            -p:IncludeNativeLibrariesForSelfExtract=true
-            -p:AllowedReferenceRelatedFileExtensions=
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:AllowedReferenceRelatedFileExtensions= \
             -p:Version=$VERSION
 
       - name: Rename artifact per platform
