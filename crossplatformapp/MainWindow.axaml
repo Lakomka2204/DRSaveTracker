@@ -14,6 +14,26 @@
         Icon="/Assets/icon.ico"
         Title="DR Save Tracker"
         >
+        <Window.Resources>
+          <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+              <ResourceDictionary x:Key="Dark">
+                <DropShadowEffect
+                x:Key="TitleEffect"
+                    BlurRadius="0"
+                    OffsetX="1"
+                    OffsetY="1"
+                />
+              </ResourceDictionary>
+              <ResourceDictionary x:Key="Light">
+                <DropShadowEffect
+                x:Key="TitleEffect"
+                Opacity="0"
+                />
+              </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+          </ResourceDictionary>
+        </Window.Resources>
     <DockPanel>
     <Menu 
     DockPanel.Dock="Top"
@@ -40,13 +60,13 @@
             Header="_Normal"
             ToggleType="Radio"
             GroupName="Density"
-            IsChecked="{Binding NormalDensity, Mode=TwoWay}" 
+            IsChecked="{Binding !IsCompact, Mode=TwoWay}" 
           />
           <MenuItem 
             Header="_Compact"
             ToggleType="Radio"
             GroupName="Density"
-            IsChecked="{Binding CompactDensity, Mode=TwoWay}" 
+            IsChecked="{Binding IsCompact, Mode=TwoWay}" 
           />
         </MenuItem>
       </MenuItem>
@@ -111,6 +131,7 @@
             <DataTemplate>
               <TextBlock
               Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
+              Effect="{DynamicResource ResourceKey=TitleEffect}"
               >
                 <TextBlock.Text>
                   <MultiBinding StringFormat="Ch. {0}-{1}">
@@ -134,8 +155,10 @@
               <TextBlock 
               Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
               Text="{Binding Name}" 
+              Effect="{DynamicResource ResourceKey=TitleEffect}"
               ToolTip.Tip="{Binding Name}"
-              />
+              >
+            </TextBlock>
             </DataTemplate>
           </TableViewColumn.CellTemplate>
         </TableViewColumn>       
@@ -144,10 +167,12 @@
             <DataTemplate>
               <TextBlock 
               Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
+              Effect="{DynamicResource ResourceKey=TitleEffect}"
               
               Text="{Binding RoomName}" 
               ToolTip.Tip="{Binding RoomName}"
-              />
+              >
+              </TextBlock>
             </DataTemplate>
           </TableViewColumn.CellTemplate>
         </TableViewColumn>
@@ -157,8 +182,10 @@
               <TextBlock 
               Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
               Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}" 
+              Effect="{DynamicResource ResourceKey=TitleEffect}"
               ToolTip.Tip="{Binding PlayTime}"
-              />
+              >
+              </TextBlock>
             </DataTemplate>
           </TableViewColumn.CellTemplate>
         </TableViewColumn>
@@ -168,8 +195,10 @@
               <TextBlock 
               Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
               Text="{Binding LastWrite, StringFormat=g}" 
+              Effect="{DynamicResource ResourceKey=TitleEffect}"
               ToolTip.Tip="{Binding LastWrite, StringFormat=R}"
-              />
+              >
+            </TextBlock>
             </DataTemplate>
           </TableViewColumn.CellTemplate>
         </TableViewColumn>
@@ -195,6 +224,7 @@
                 <DataTemplate x:DataType="drstcore:SaveFileInfo">
                   <TextBlock
                   Text="{Binding Name}"
+                  Effect="{DynamicResource ResourceKey=TitleEffect}"
                   >
                   <TextBlock.Foreground>
                     <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
@@ -212,6 +242,7 @@
                 <DataTemplate x:DataType="drstcore:SaveFileInfo">
                   <TextBlock
                   Text="{Binding RoomName}"
+                  Effect="{DynamicResource ResourceKey=TitleEffect}"
                   >
                   <TextBlock.Foreground>
                     <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
@@ -228,6 +259,7 @@
                 <DataTemplate x:DataType="drstcore:SaveFileInfo">
                   <TextBlock
                   Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
+                  Effect="{DynamicResource ResourceKey=TitleEffect}"
                   >
                 <TextBlock.Foreground>
                     <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
@@ -244,6 +276,7 @@
                 <DataTemplate x:DataType="drstcore:SaveFileInfo">
                   <TextBlock
                   Text="{Binding LastWrite}"
+                  Effect="{DynamicResource ResourceKey=TitleEffect}"
                   >
                   <TextBlock.Foreground>
                     <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">

@@ -32,10 +32,16 @@ public partial class App : Application
     }
     private void WindowClosing(object? sender, WindowClosingEventArgs args)
     {
-        // if (_reallyExit)
-        //     return;
         if (args.CloseReason == WindowCloseReason.ApplicationShutdown)
+        {
+            _window!.PropertyChanged -= ToggleTrayIcon;
             return;
+        }
+        if (!Settings.Current.HideOnClose)
+        {
+            Program.GetLife()?.Shutdown(0);
+            return;
+        }
         args.Cancel = true;
         HideWindow();
     }
@@ -58,8 +64,6 @@ public partial class App : Application
     private static void EndWindow()
     {
         Program.GetLife()?.Shutdown(0);
-        // _reallyExit = true;
-        // _window?.Close();
     }
     private void ToggleTrayIcon(object? sender,AvaloniaPropertyChangedEventArgs args)
     {
@@ -70,13 +74,6 @@ public partial class App : Application
         if (_trayIcon == null)
             return;
         _trayIcon.IsVisible = !window.IsVisible;
-        if (!_trayIcon.IsVisible)
-        {
-        Notification nf = new("Hello","im zelensky", NotificationType.Information);
-        System.Console.WriteLine("showing notif");
-        WindowNotificationManager nwm = new(_window);
-        nwm.Show(nf);
-        }
         
     }
     public override void OnFrameworkInitializationCompleted()

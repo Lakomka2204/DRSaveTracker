@@ -21,15 +21,36 @@ FontWeight="Bold"
 FontSize="24"
 Margin="10,5"
             />
+            <StackPanel Margin="20,10">
+
                 <TextBlock
-FontFamily="{StaticResource ResourceKey=DRFontFamily}"
-                Text="{Binding Path=Startup.Status,
-                StringFormat='Startup: {0}'}"
+                FontFamily="{StaticResource ResourceKey=DRFontFamily}"
+                Text="Run on system startup"
                 />
-               <ToggleSwitch 
-               IsEnabled="{Binding !IsStartupLocked}"
-               IsChecked="{Binding Path=IsStartupEnabled, Mode=TwoWay}"
-               
-               />
+                <TextBlock
+                FontFamily="{StaticResource ResourceKey=DRFontFamily}"
+                IsVisible="{Binding IsStartupLocked}"
+                Text="(disabled by user)"
+                />
+                <ToggleSwitch 
+                IsEnabled="{Binding !IsStartupLocked}"
+                IsChecked="{Binding Path=IsStartupEnabled, Mode=TwoWay}"
+                FontFamily="{StaticResource ResourceKey=DRFontFamily}"
+                >
+                
+                </ToggleSwitch>
+            </StackPanel>
+            <StackPanel Margin="20,10">
+
+                <TextBlock
+                FontFamily="{StaticResource ResourceKey=DRFontFamily}"
+                Text="Hide in system tray on close"
+                />
+                <ToggleSwitch 
+                IsChecked="{Binding Path=Settings.HideOnClose, Mode=TwoWay}"
+                FontFamily="{StaticResource ResourceKey=DRFontFamily}"
+                >
+                </ToggleSwitch>
+            </StackPanel>
         </StackPanel>
 </Window>

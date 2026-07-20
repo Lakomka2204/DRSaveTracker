@@ -4,27 +4,23 @@ using Avalonia;
 using Avalonia.Themes.Fluent;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using crossplatformapp.Utils;
 
 namespace crossplatformapp;
 
 public partial class MenuViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private bool normalDensity = true;
-
-    [ObservableProperty]
-    private bool compactDensity;
-
-    partial void OnNormalDensityChanged(bool value)
+    public MenuViewModel()
     {
-        if (value)
-            SetDensity(DensityStyle.Normal);
+        IsCompact = Settings.Current.IsCompact;
     }
-
-    partial void OnCompactDensityChanged(bool value)
+    [ObservableProperty]
+    private bool isCompact;
+    partial void OnIsCompactChanged(bool value)
     {
-        if (value)
-            SetDensity(DensityStyle.Compact);
+        DensityStyle d = value ? DensityStyle.Compact : DensityStyle.Normal;
+        SetDensity(d);
+        Settings.Current.IsCompact = value;
     }
 
     private static void SetDensity(DensityStyle density)
@@ -44,11 +40,11 @@ public partial class MenuViewModel : ObservableObject
     [RelayCommand]
     private static async Task OpenSettings()
     {
-        SettingsWindow sw =new();
+        SettingsWindow sw = new();
         await sw.ShowDialog(Program.GetLife()?.MainWindow!);
     }
     [RelayCommand]
-    internal static void QuitApp()
+    private static void QuitApp()
     {
         Program.GetLife()?.Shutdown(0);
     }
