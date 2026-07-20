@@ -82,7 +82,7 @@ namespace DRSaveTracker
             listView1.Items.Clear();
             var saves = Directory.GetFiles(saveFolder, "filech*")
                 .Select(s => new SaveFileInfo(s, rmi))
-                .Where(s => s.Type == SlotType.Normal);
+                .Where(s => s.FileExists);
             if (!Directory.Exists(backupFolder))
             {
                 toolStripStatusLabel1.Text = "Making initial backups...";
@@ -98,14 +98,11 @@ namespace DRSaveTracker
                     backupFolder,
                     "filech*",
                     SearchOption.TopDirectoryOnly)
-                .Select(s => new SaveFileInfo(s, rmi))
-                .Where(s => s.Type == SlotType.Normal);
+                .Select(s => new SaveFileInfo(s, rmi));
             var allSaves = saves
                 .Concat(backups)
                 .GroupBy(g => g.OriginalFileName)
                 .Select(g => g.First());
-            //.OrderBy(g => g.Chapter)
-            //.ThenBy(g => g.Slot);
             var chapters = allSaves.GroupBy(s => s.Chapter).ToArray();
             toolStripStatusLabel1.Text = "Updating UI";
             foreach (var chapter in chapters)
@@ -136,7 +133,7 @@ namespace DRSaveTracker
             listView2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             toolStripStatusLabel1.Text = "Loading room info...";
             if (settings.FetchRoomNames)
-                await rmi.LoadRoomInfo(null);
+                await rmi.LoadRoomInfo();
             toolStripStatusLabel1.Text = "Reading save files...";
             if (!Directory.Exists(saveFolder))
             {
@@ -204,8 +201,8 @@ namespace DRSaveTracker
             listView2.Groups.Clear();
             listView2.Tag = filename;
             var svi = new SaveFileInfo(filename, rmi);
-            var backups = svi.GetBackups(backupFolder);
-            if (backups.Length == 0)
+            svi.GetBackups(backupFolder);
+            if (svi.Backups.Length == 0)
             {
                 listView2.Items.Add("No backups");
                 return;
@@ -213,7 +210,7 @@ namespace DRSaveTracker
             ListViewGroup latestVG = new("Latest");
             ListViewGroup previousVG = new("Previous");
             listView2.Groups.AddRange([latestVG, previousVG]);
-            foreach (var backup in backups)
+            foreach (var backup in svi.Backups)
             {
                 ListViewGroup group = svi.LastWrite == backup.LastWrite ? latestVG : previousVG;
                 var lvi = new ListViewItem(backup.Name, group)

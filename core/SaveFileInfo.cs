@@ -1,43 +1,52 @@
 ﻿using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace DRSTCore
 {
-    public partial class SaveFileInfo
+    public partial class SaveFileInfo : ObservableObject
     {
-        [GeneratedRegex(@"filech(\d)_(\d)(_b)?")]
+        [GeneratedRegex(@"filech(\d)_([012])")]
         private static partial Regex FileNameRegex();
-        public int Chapter { get; set; }
-        public Slot Slot { get; set; }
-        public SlotType Type { get; set; }
-        public string Name { get; set; } = "EMPTY";
-        public TimeSpan PlayTime { get; set; }
-        public bool BSide { get; set; } = false;
-        public int Room { get; set; }
-        public string FileName { get; set; }
-        public string OriginalFileName { get; set; }
-        public string? RoomName { get; set; }
-        public DateTime LastWrite { get; set; } = DateTime.MinValue;
+        [ObservableProperty]
+        private int chapter = 0;
+        [ObservableProperty]
+        private int slot = -1;
+        [ObservableProperty]
+        private string name = "EMPTY";
+        [ObservableProperty]
+        private TimeSpan playTime = TimeSpan.Zero;
+        [ObservableProperty]
+        private int room = 0;
+        [ObservableProperty]
+        private string? roomName = "N/A";
+        [ObservableProperty]
+        private string fileName = string.Empty;
+        [ObservableProperty]
+        private string originalFileName = string.Empty;
+        [ObservableProperty]
+        private DateTime lastWrite = DateTime.UnixEpoch;
+        [ObservableProperty]
+        private bool fileExists = false;
+        [ObservableProperty]
+        private SaveFileInfo[] backups = [];
         public RoomMapper? Mapper { get; set; }
-        public bool FileExists { get; set; }
         public SaveFileInfo(string filename)
         {
             FileName = filename;
             var name = Path.GetFileName(filename);
             var match = FileNameRegex().Match(name);
             if (!match.Success)
-                throw new ArgumentException("Filename regex unsuccessful", nameof(filename));
+                return;
+                // throw new ArgumentException("Filename regex unsuccessful", nameof(filename));
             OriginalFileName = match.Groups[0].Value;
             Chapter = int.Parse(match.Groups[1].Value);
-            var slot = int.Parse(match.Groups[2].Value);
-            Slot = slot == 9 ? Slot.None : (Slot)(slot % 3);
-            Type = (SlotType)(slot / 3);
+            var slot = int.Parse(match.Groups[2].Value) + 1;
+            Slot = slot;
             FileExists = File.Exists(FileName);
             if (!FileExists)
                 return;
-            if (match.Groups[3].Value.Length > 0)
-                BSide = true;
             FileInfo fi = new(filename);
             LastWrite = fi.LastWriteTime;
             var lines = File.ReadLines(filename);
@@ -55,23 +64,37 @@ namespace DRSTCore
                 RoomName = roomMapper[Room];
             Mapper = roomMapper;
         }
-        public SaveFileInfo[] GetBackups(string backupFolder)
+        public SaveFileInfo(string filename, RoomMapper? roomMapper, string? backupFolder)
+            : this(filename,roomMapper)
         {
-            var saveFolder = Path.Join(backupFolder, OriginalFileName);
-            if (!Directory.Exists(saveFolder)) return [];
-            return Directory
-                .GetFiles(saveFolder,"filech*")
+            if (backupFolder == null)
+                return;
+            GetBackups(backupFolder);
+        }
+        public void GetBackups(string backupFolder)
+        {
+            var concreteBackupFolder = Path.Join(backupFolder, OriginalFileName);
+            if (!Directory.Exists(concreteBackupFolder)) return;
+            // сделать так чтобы первый отображался как последний (latest)
+            
+            Backups = [.. Directory
+                .GetFiles(concreteBackupFolder,"filech*")
                 .Select(f => new SaveFileInfo(f, Mapper))
-                .OrderByDescending(f => f.LastWrite).ToArray();
+                .OrderByDescending(f => f.LastWrite == LastWrite)
+                .ThenByDescending(f => f.LastWrite)];
         }
         public void MakeBackup(string backupFolder)
         {
-            var backupConcreteFolder = Path.Join(backupFolder, OriginalFileName);
-            if (!Directory.Exists(backupConcreteFolder))
-                Directory.CreateDirectory(backupConcreteFolder);
-            var backupName = string.Format("{0}_{1}",OriginalFileName, LastWrite.ToFileTimeUtc());
-            var backupFileName = Path.Join(backupConcreteFolder, backupName);
-            File.Copy(FileName, backupFileName,true);
+            if (FileExists)
+            {
+                var backupConcreteFolder = Path.Join(backupFolder, OriginalFileName);
+                if (!Directory.Exists(backupConcreteFolder))
+                    Directory.CreateDirectory(backupConcreteFolder);
+                var backupName = string.Format("{0}_{1}",OriginalFileName, LastWrite.ToFileTimeUtc());
+                var backupFileName = Path.Join(backupConcreteFolder, backupName);
+                File.Copy(FileName, backupFileName,true);
+            }
+            GetBackups(backupFolder);
         }
         public string RestoreToOriginal(string originalFolder)
         {
@@ -84,11 +107,13 @@ namespace DRSTCore
         public override string ToString()
         {
             StringBuilder sb = new();
-            sb.AppendFormat("Chapter {0}{1}\t", Chapter,BSide ? "B" : string.Empty);
-            sb.AppendFormat("Slot {0}({1})\t", Slot.ToString(),Type.ToString());
-            sb.AppendFormat("- {0} - {1}\t", Name.PadRight(12),PlayTime);
+            sb.AppendFormat("Chapter {0}\t", Chapter);
+            sb.AppendFormat("Slot {0}\t", Slot.ToString());
+            sb.AppendFormat("{0} - {1}\t", Name.PadRight(12),PlayTime);
             if (RoomName != null)
                 sb.AppendFormat("- {0}({1})", RoomName,Room);
+            else
+                sb.AppendFormat("- Room id: {0}",Room);
             return sb.ToString();
         }
     }
@@ -100,10 +125,5 @@ public enum Slot
     Third = 2,
 
 }
-    public enum SlotType
-    {
-        Normal = 0,
-        Completion = 1,
-        Death = 3
-    }
+
 }

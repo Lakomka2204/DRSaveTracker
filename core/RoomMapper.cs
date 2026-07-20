@@ -13,7 +13,7 @@
         {
             CacheDirectory = cacheDir;
         }
-        public async Task WriteToCache(string filename, string content)
+        private async Task WriteToCache(string filename, string content)
         {
             if (CacheDirectory == null)
                 return;
@@ -23,7 +23,7 @@
             using StreamWriter sw = new(fullName);
             sw.Write(content);
         }
-        public async Task<string?> GetFromCache(string filename)
+        private async Task<string?> GetFromCache(string filename)
         {
             var fullName = Path.Join(CacheDirectory, filename);
             if (!File.Exists(fullName))
@@ -35,7 +35,12 @@
             using StreamReader sr = new(fi.OpenRead());
             return await sr.ReadToEndAsync();
         }
-        public async Task LoadRoomInfo(IProgress<int>? progress)
+        public void UnloadRoomInfo()
+        {
+            lightWorldDict.Clear();
+            darkWorldDict.Clear();
+        }
+        public async Task LoadRoomInfo()
         {
             for (int i = 1; i <= MAX_CHAPTERS; i++)
             {
@@ -60,16 +65,14 @@
                     var fields = line.Split(',');
 
                     int lwId = int.Parse(fields[0]);
-                    int dwId = int.Parse(fields[1]);
                     string roomName = fields[2];
-
                     lightWorldDict[lwId] = roomName;
+                    if (!int.TryParse(fields[1], out int dwId))
+                        continue;
+
                     if (!darkWorldDict.ContainsKey(dwId))
                         darkWorldDict[dwId] = roomName;
                 }
-                var r = (double)i / MAX_CHAPTERS * 100;
-
-                progress?.Report((int)r);
             }
         }
         private readonly HttpClient client;

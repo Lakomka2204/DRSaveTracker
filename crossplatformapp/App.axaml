@@ -1,0 +1,44 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="crossplatformapp.App"
+             xmlns:local="using:crossplatformapp"
+             xmlns:utils="using:crossplatformapp.Utils"
+             x:DataType="local:App"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon 
+            ToolTipText="Running in the 90s" 
+            Icon="/Assets/icon.ico"
+            IsVisible="False"
+            Command="{Binding ShowWindowCommand}"
+            >
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem 
+                        Header="Show" 
+                        Command="{Binding ShowWindowCommand}"
+                        />
+                        <NativeMenuItemSeparator/>
+                        <NativeMenuItem 
+                        Header="End" 
+                        Command="{Binding EndWindowCommand}"
+                        />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
+    <Application.Styles>
+        <FluentTheme DensityStyle="Normal"/>
+    </Application.Styles>
+    <Application.Resources>
+            <utils:TimeConverter x:Key="TimeConverter"/>
+            <utils:NullToBoolConverter x:Key="NullToBoolConverter"/>
+            <utils:ChapterColorConverter x:Key="ChapterColorConverter"/>
+            <utils:LatestBackupColorConverter x:Key="LatestBackupColorConverter"/>
+            <utils:BoolToYesNoConverter x:Key="BoolToYesNoConverter"/>
+            <FontFamily x:Key="DRFontFamily">fonts:DRFonts#8-bit Operator+, fonts:DRFonts#JF Dot Shinonome Gothic 14</FontFamily>
+    </Application.Resources>
+</Application>
