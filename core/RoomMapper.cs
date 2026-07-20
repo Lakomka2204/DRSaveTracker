@@ -65,10 +65,11 @@
                     var fields = line.Split(',');
 
                     int lwId = int.Parse(fields[0]);
-                    int dwId = int.Parse(fields[1]);
                     string roomName = fields[2];
-
                     lightWorldDict[lwId] = roomName;
+                    if (!int.TryParse(fields[1], out int dwId))
+                        continue;
+
                     if (!darkWorldDict.ContainsKey(dwId))
                         darkWorldDict[dwId] = roomName;
                 }

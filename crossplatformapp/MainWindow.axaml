@@ -183,7 +183,7 @@
               Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
               Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}" 
               Effect="{DynamicResource ResourceKey=TitleEffect}"
-              ToolTip.Tip="{Binding PlayTime}"
+              ToolTip.Tip="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
               >
               </TextBlock>
             </DataTemplate>
@@ -225,6 +225,7 @@
                   <TextBlock
                   Text="{Binding Name}"
                   Effect="{DynamicResource ResourceKey=TitleEffect}"
+                  ToolTip.Tip="{Binding Name}"
                   >
                   <TextBlock.Foreground>
                     <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
@@ -243,6 +244,7 @@
                   <TextBlock
                   Text="{Binding RoomName}"
                   Effect="{DynamicResource ResourceKey=TitleEffect}"
+                  ToolTip.Tip="{Binding RoomName}"
                   >
                   <TextBlock.Foreground>
                     <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
@@ -260,6 +262,7 @@
                   <TextBlock
                   Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
                   Effect="{DynamicResource ResourceKey=TitleEffect}"
+                  ToolTip.Tip="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
                   >
                 <TextBlock.Foreground>
                     <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
@@ -275,8 +278,9 @@
               <TableViewColumn.CellTemplate>
                 <DataTemplate x:DataType="drstcore:SaveFileInfo">
                   <TextBlock
-                  Text="{Binding LastWrite}"
+                  Text="{Binding LastWrite, StringFormat=g}"
                   Effect="{DynamicResource ResourceKey=TitleEffect}"
+                  ToolTip.Tip="{Binding LastWrite, StringFormat=R}"
                   >
                   <TextBlock.Foreground>
                     <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
