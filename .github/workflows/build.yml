@@ -21,15 +21,13 @@ jobs:
           - os: windows-latest
             rid: win-x86
             ext: .exe
-          - os: ubuntu-latest
-            rid: linux-x64
-            ext: ""
-          - os: macos-latest
-            rid: osx-x64
-            ext: ""
-          - os: macos-latest
-            rid: osx-arm64
-            ext: ""
+            # I don't have a mac to test this so yeah....
+          # - os: macos-latest
+          #   rid: osx-x64
+          #   ext: ""
+          # - os: macos-latest
+          #   rid: osx-arm64
+          #   ext: ""
 
     runs-on: ${{ matrix.os }}
 
