@@ -39,7 +39,7 @@ namespace DRSTCore
             var match = FileNameRegex().Match(name);
             if (!match.Success)
                 return;
-                // throw new ArgumentException("Filename regex unsuccessful", nameof(filename));
+            // throw new ArgumentException("Filename regex unsuccessful", nameof(filename));
             OriginalFileName = match.Groups[0].Value;
             Chapter = int.Parse(match.Groups[1].Value);
             var slot = int.Parse(match.Groups[2].Value) + 1;
@@ -60,12 +60,15 @@ namespace DRSTCore
         }
         public SaveFileInfo(string filename, RoomMapper? roomMapper) : this(filename)
         {
-            if (roomMapper != null)
-                RoomName = roomMapper[Room];
             Mapper = roomMapper;
+
+            if (roomMapper is null)
+                return;
+
+            RoomName = roomMapper[Room] ?? "ID: " + Room.ToString();
         }
         public SaveFileInfo(string filename, RoomMapper? roomMapper, string? backupFolder)
-            : this(filename,roomMapper)
+            : this(filename, roomMapper)
         {
             if (backupFolder == null)
                 return;
@@ -76,7 +79,7 @@ namespace DRSTCore
             var concreteBackupFolder = Path.Join(backupFolder, OriginalFileName);
             if (!Directory.Exists(concreteBackupFolder)) return;
             // сделать так чтобы первый отображался как последний (latest)
-            
+
             Backups = [.. Directory
                 .GetFiles(concreteBackupFolder,"filech*")
                 .Select(f => new SaveFileInfo(f, Mapper))
@@ -90,9 +93,9 @@ namespace DRSTCore
                 var backupConcreteFolder = Path.Join(backupFolder, OriginalFileName);
                 if (!Directory.Exists(backupConcreteFolder))
                     Directory.CreateDirectory(backupConcreteFolder);
-                var backupName = string.Format("{0}_{1}",OriginalFileName, LastWrite.ToFileTimeUtc());
+                var backupName = string.Format("{0}_{1}", OriginalFileName, LastWrite.ToFileTimeUtc());
                 var backupFileName = Path.Join(backupConcreteFolder, backupName);
-                File.Copy(FileName, backupFileName,true);
+                File.Copy(FileName, backupFileName, true);
             }
             GetBackups(backupFolder);
         }
@@ -103,27 +106,27 @@ namespace DRSTCore
             File.Delete(FileName);
             return originalFilename;
         }
-        
+
         public override string ToString()
         {
             StringBuilder sb = new();
             sb.AppendFormat("Chapter {0}\t", Chapter);
             sb.AppendFormat("Slot {0}\t", Slot.ToString());
-            sb.AppendFormat("{0} - {1}\t", Name.PadRight(12),PlayTime);
+            sb.AppendFormat("{0} - {1}\t", Name.PadRight(12), PlayTime);
             if (RoomName != null)
-                sb.AppendFormat("- {0}({1})", RoomName,Room);
+                sb.AppendFormat("- {0}({1})", RoomName, Room);
             else
-                sb.AppendFormat("- Room id: {0}",Room);
+                sb.AppendFormat("- Room id: {0}", Room);
             return sb.ToString();
         }
     }
-public enum Slot
-{
-    None = -1,
-    First = 0,
-    Second = 1,
-    Third = 2,
+    public enum Slot
+    {
+        None = -1,
+        First = 0,
+        Second = 1,
+        Third = 2,
 
-}
+    }
 
 }

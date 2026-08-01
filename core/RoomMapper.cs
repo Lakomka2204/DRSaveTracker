@@ -44,6 +44,9 @@
         {
             for (int i = 1; i <= MAX_CHAPTERS; i++)
             {
+                try
+                {
+                    
                 var cUrl = string.Format(URL, i);
                 var filename = Path.GetFileName(cUrl);
                 var csv = await GetFromCache(filename);
@@ -72,6 +75,12 @@
 
                     if (!darkWorldDict.ContainsKey(dwId))
                         darkWorldDict[dwId] = roomName;
+                }
+                }
+                catch
+                {
+                    // probably no internet
+                    continue;
                 }
             }
         }
