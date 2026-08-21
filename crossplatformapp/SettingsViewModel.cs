@@ -4,6 +4,7 @@
 
 
 using System;
+using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
 using crossplatformapp.Utils;
 using crossplatformapp.Utils.Startup;
@@ -18,6 +19,11 @@ public partial class SettingsViewModel : ObservableObject
         Startup = StartupFactory.Create();
         Settings = Settings.Current;
     }
+    public static string AppVersion => 
+        Assembly.GetExecutingAssembly()
+        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+        .InformationalVersion ?? "Unknown";
+
     public bool IsStartupLocked
     {
         get => Startup.Status == StartupStatus.DisabledByUser;

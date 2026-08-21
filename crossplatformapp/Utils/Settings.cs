@@ -48,6 +48,12 @@ namespace crossplatformapp.Utils
             get => _hideOnClose;
             set => SetField(ref _hideOnClose, value, nameof(HideOnClose));
         }
+        private bool _isSysFont = false;
+        public bool IsSysFont
+        {
+            get => _isSysFont;
+            set => SetField(ref _isSysFont, value, nameof(IsSysFont));
+        }
 
         #endregion
 

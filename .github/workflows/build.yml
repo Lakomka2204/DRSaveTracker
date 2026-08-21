@@ -62,13 +62,14 @@ jobs:
       - name: Rename artifact per platform
         shell: bash
         run: |
-          mv "publish/DRSaveTracker${{ matrix.ext }}" "publish/DRSaveTracker-${{ matrix.rid }}${{ matrix.ext }}"
+          mv "publish/DRSaveTracker${{ matrix.ext }}" \
+            "publish/DRSaveTracker-${VERSION}-${{ matrix.rid }}${{ matrix.ext }}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: DRSaveTracker-${{ matrix.rid }}
-          path: publish/DRSaveTracker-${{ matrix.rid }}${{ matrix.ext }}
+          name: DRSaveTracker-${VERSION}-${{ matrix.rid }}
+          path: publish/DRSaveTracker-${VERSION}-${{ matrix.rid }}${{ matrix.ext }}
 
   release:
     needs: build

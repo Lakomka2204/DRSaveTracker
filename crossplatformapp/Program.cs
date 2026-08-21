@@ -34,7 +34,7 @@ class Program
 #if DEBUG
             .WithDeveloperTools()
 #endif
-            // .WithInterFont()
+            .WithInterFont()
             .ConfigureFonts(fm =>
             {
                 fm.AddFontCollection(new DRFontCollection());

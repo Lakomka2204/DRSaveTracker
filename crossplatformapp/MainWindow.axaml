@@ -39,7 +39,6 @@
     DockPanel.Dock="Top"
     BorderThickness="0,0,0,1" 
     BorderBrush="{DynamicResource SystemControlBackgroundBaseLowBrush}"
-    FontFamily="{StaticResource ResourceKey=DRFontFamily}"
     DataContext="{Binding Menu}"
       >
       <MenuItem Header="_Menu">
@@ -69,6 +68,20 @@
             IsChecked="{Binding IsCompact, Mode=TwoWay}" 
           />
         </MenuItem>
+        <MenuItem Header="_Font">
+          <MenuItem
+          Header="_Natural"
+          ToggleType="Radio"
+          GroupName="Font"
+          IsChecked="{Binding !IsSysFont, Mode=TwoWay}"
+          />
+          <MenuItem
+            Header="_System"
+            ToggleType="Radio"
+            GroupName="Font"
+            IsChecked="{Binding IsSysFont, Mode=TwoWay}"
+            />
+          </MenuItem>
       </MenuItem>
     </Menu>
 
@@ -83,7 +96,6 @@
         StringFormat='Watcher Enabled: {0}', 
         Converter={StaticResource BoolToYesNoConverter}
         }"
-        FontFamily="{StaticResource ResourceKey=DRFontFamily}"
         Margin="4"
         />
         <TextBlock 
@@ -92,7 +104,6 @@
         StringFormat='Selected save: {0}',
         FallbackValue='Selected save: None'
         }"
-        FontFamily="{StaticResource ResourceKey=DRFontFamily}"
         Margin="4"
         />
         <TextBlock 
@@ -101,15 +112,8 @@
         FallbackValue='Selected backup from: Never', 
         StringFormat='Selected backup from: {0:G}'
         }"
-        FontFamily="{StaticResource ResourceKey=DRFontFamily}"
         Margin="4"
         />
-        <!-- <Button 
-        Content="Toggle enableation"
-        Command="{Binding ToggleWatchingCommand}"
-        FontFamily="{StaticResource ResourceKey=DRFontFamily}"
-        Margin="4"
-        /> -->
       </StackPanel>
       </Border>
 
@@ -118,7 +122,6 @@
       Grid.Column="0"
       SelectionMode="Single"
       ItemsSource="{Binding Sfw.Saves}"
-      FontFamily="{StaticResource ResourceKey=DRFontFamily}"
       FontWeight="Bold"
       SelectedItem="{Binding SelectedSave, Mode=TwoWay}"
       >
@@ -214,7 +217,6 @@
           Grid.Row="0"
           SelectionMode="Single"
           ItemsSource="{Binding SelectedSave?.Backups, FallbackValue=[]}"
-          FontFamily="{StaticResource ResourceKey=DRFontFamily}"
           FontWeight="Bold"
           SelectedItem="{Binding SelectedBackup, Mode=TwoWay}"
         >
@@ -302,12 +304,10 @@
           <Button 
           Content="Restore"
           Command="{Binding RestoreSelectedBackupCommand}"
-          FontFamily="{StaticResource ResourceKey=DRFontFamily}"
           />
           <Button 
           Content="Delete"
           Command="{Binding DeleteBackupCommand}"
-          FontFamily="{StaticResource ResourceKey=DRFontFamily}"
           />
           </StackPanel>
       </Grid>

@@ -32,6 +32,15 @@
     </TrayIcon.Icons>
     <Application.Styles>
         <FluentTheme DensityStyle="Normal"/>
+        <Style Selector="TemplatedControl">
+            <Setter Property="FontFamily" Value="{DynamicResource DRFontFamily}"/>
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="FontFamily" Value="{DynamicResource DRFontFamily}"/>
+        </Style>
+        <Style Selector="Menu">
+            <Setter Property="FontFamily" Value="{DynamicResource DRFontFamily}"/>
+        </Style>
     </Application.Styles>
     <Application.Resources>
             <utils:TimeConverter x:Key="TimeConverter"/>
