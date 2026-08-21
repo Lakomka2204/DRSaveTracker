@@ -63,13 +63,13 @@ jobs:
         shell: bash
         run: |
           mv "publish/DRSaveTracker${{ matrix.ext }}" \
-            "publish/DRSaveTracker-${VERSION}-${{ matrix.rid }}${{ matrix.ext }}"
+            "publish/DRSaveTracker-${{ env.VERSION }}-${{ matrix.rid }}${{ matrix.ext }}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: DRSaveTracker-${VERSION}-${{ matrix.rid }}
-          path: publish/DRSaveTracker-${VERSION}-${{ matrix.rid }}${{ matrix.ext }}
+          name: DRSaveTracker-${{ env.VERSION }}-${{ matrix.rid }}
+          path: publish/DRSaveTracker-${{ env.VERSION }}-${{ matrix.rid }}${{ matrix.ext }}
 
   release:
     needs: build
