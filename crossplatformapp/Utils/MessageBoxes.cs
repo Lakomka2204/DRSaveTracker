@@ -8,7 +8,7 @@ namespace crossplatformapp.Utils;
 
 public static class MessageBoxes
 {
-    public static IMsBox<string> GetOwnMboxYesNo(string title,string content, MsBox.Avalonia.Enums.Icon icon)
+    public static IMsBox<string> GetOwnMboxYesNo(string title, string content, MsBox.Avalonia.Enums.Icon icon)
     {
         return MessageBoxManager.GetMessageBoxCustom(
             new MsBox.Avalonia.Dto.MessageBoxCustomParams()
@@ -18,10 +18,10 @@ public static class MessageBoxes
                 ContentMessage = content,
                 ButtonDefinitions = [
                 new ButtonDefinition() {Name = "Yes"},
-                new ButtonDefinition() 
+                new ButtonDefinition()
                 {
-                    Name = "No", 
-                    IsCancel = true, 
+                    Name = "No",
+                    IsCancel = true,
                     IsDefault = true
                 }
                 ],
@@ -37,7 +37,7 @@ public static class MessageBoxes
     }
     public static IMsBox<string> GetOwnMBox(
         string title,
-        string content, 
+        string content,
         MsBox.Avalonia.Enums.Icon icon)
     {
         return MessageBoxManager.GetMessageBoxCustom(
@@ -47,10 +47,10 @@ public static class MessageBoxes
                 ContentHeader = title,
                 ContentMessage = content,
                 ButtonDefinitions = [
-                new ButtonDefinition() 
+                new ButtonDefinition()
                 {
-                    Name = "OK", 
-                    IsCancel=true, 
+                    Name = "OK",
+                    IsCancel=true,
                     IsDefault=true
                 },
                 ],

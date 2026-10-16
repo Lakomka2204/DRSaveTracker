@@ -1,10 +1,6 @@
-
-
 using System;
-using System.ComponentModel;
 using System.Runtime.Versioning;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 
 namespace crossplatformapp.Utils.Startup;
@@ -18,19 +14,19 @@ public partial class WindowsStartup : ObservableObject, IStartup
     }
     [ObservableProperty]
     private StartupStatus status;
-    private static readonly string AutoRunPath = 
+    private static readonly string AutoRunPath =
         @"Software\Microsoft\Windows\CurrentVersion\Run";
     private static readonly string ApprovePath =
         @"Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run";
 
     public static StartupStatus Check()
     {
-        using var autorunKey = 
+        using var autorunKey =
             Registry.CurrentUser.OpenSubKey(AutoRunPath);
         if (autorunKey?.GetValue(Program.AppName) == null)
             return StartupStatus.Unregistered;
-        
-        using var approveKey = 
+
+        using var approveKey =
             Registry.CurrentUser.OpenSubKey(ApprovePath);
         if (approveKey is null)
             return StartupStatus.Registered;
@@ -40,8 +36,8 @@ public partial class WindowsStartup : ObservableObject, IStartup
     }
     public void Register()
     {
-        using var key = 
-            Registry.CurrentUser.CreateSubKey(AutoRunPath,true);
+        using var key =
+            Registry.CurrentUser.CreateSubKey(AutoRunPath, true);
         key?.SetValue(
             Program.AppName,
             $"\"{Environment.ProcessPath}\" -s");
@@ -49,8 +45,8 @@ public partial class WindowsStartup : ObservableObject, IStartup
     }
     public void Unregister()
     {
-        using var key = 
-            Registry.CurrentUser.OpenSubKey(AutoRunPath,true);
+        using var key =
+            Registry.CurrentUser.OpenSubKey(AutoRunPath, true);
         key?.DeleteValue(Program.AppName);
         Status = Check();
     }

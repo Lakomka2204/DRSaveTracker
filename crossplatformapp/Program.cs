@@ -15,7 +15,7 @@ class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        Console.WriteLine("Main entry point start, args: {0}",string.Join(' ',args));
+        Console.WriteLine("Main entry point start, args: {0}", string.Join(' ', args));
         BuildAvaloniaApp()
         .StartWithClassicDesktopLifetime(args, Avalonia.Controls.ShutdownMode.OnExplicitShutdown);
         Console.WriteLine("Main entry point end");
@@ -23,7 +23,7 @@ class Program
     public static IClassicDesktopStyleApplicationLifetime? GetLife()
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        return desktop;
+            return desktop;
         else return null;
     }
     // Avalonia configuration, don't remove; also used by visual designer.

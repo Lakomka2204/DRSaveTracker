@@ -33,8 +33,6 @@ public partial class SettingsViewModel : ObservableObject
         get => Startup.Status != StartupStatus.Unregistered;
         set
         {
-            System.Console.WriteLine("prop changed value {0} Startup {1}",value,Startup.Status);
-            
             if (value)
                 Startup.Register();
             else

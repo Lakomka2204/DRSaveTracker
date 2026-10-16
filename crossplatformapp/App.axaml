@@ -41,6 +41,9 @@
         <Style Selector="Menu">
             <Setter Property="FontFamily" Value="{DynamicResource DRFontFamily}"/>
         </Style>
+        <Style Selector="Button">
+            <Setter Property="FontFamily" Value="{DynamicResource DRFontFamily}"/>
+        </Style>
     </Application.Styles>
     <Application.Resources>
             <utils:TimeConverter x:Key="TimeConverter"/>

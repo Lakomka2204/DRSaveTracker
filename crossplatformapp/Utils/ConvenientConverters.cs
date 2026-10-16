@@ -6,7 +6,6 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
-using crossplatformapp.Utils.Startup;
 using DRSTCore;
 
 namespace crossplatformapp.Utils;

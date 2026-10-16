@@ -19,6 +19,7 @@ public partial class MainWindowViewModel : ObservableObject
         mainWindow = window;
         Sfw = new()
         {
+            //! backup directory must be set before anything else!!!!
             BackupDirectory = PlatformPaths.BackupDirectory,
             CacheDirectory = PlatformPaths.CacheDirectory,
             WatchDirectory = PlatformPaths.SaveDirectory,
@@ -52,7 +53,7 @@ public partial class MainWindowViewModel : ObservableObject
         Sfw.IsEnabled = !Sfw.IsEnabled;
         Console.WriteLine("Toggling thang {0}", Sfw.IsEnabled);
     }
-    
+
     [RelayCommand]
     private async Task RestoreSelectedBackup()
     {
@@ -62,7 +63,7 @@ public partial class MainWindowViewModel : ObservableObject
         {
             await MessageBoxes.GetOwnMBox(
                 "Can't restore this backup",
-                "This is the latest backup, no need to restore", 
+                "This is the latest backup, no need to restore",
                 MsBox.Avalonia.Enums.Icon.Warning
             )
             .ShowAsPopupAsync(mainWindow);
@@ -73,15 +74,15 @@ public partial class MainWindowViewModel : ObservableObject
             "Restore backup?",
             string.Format(
                 "Do you want to restore this backup to Ch. {0} slot {1}?\n"
-                +"{2} {3} -> {4} {5}",
+                + "{2} {3} -> {4} {5}",
                 SelectedBackup.Chapter,
                 SelectedBackup.Slot,
                 SelectedBackup.Name,
                 tc.Convert(SelectedBackup.PlayTime
-                ,typeof(string),null,CultureInfo.CurrentCulture),
+                , typeof(string), null, CultureInfo.CurrentCulture),
                 SelectedSave.Name,
                 tc.Convert(SelectedSave.PlayTime
-                ,typeof(string),null,CultureInfo.CurrentCulture)
+                , typeof(string), null, CultureInfo.CurrentCulture)
                 ),
                 MsBox.Avalonia.Enums.Icon.Question
         ).ShowAsPopupAsync(mainWindow);
@@ -112,7 +113,7 @@ public partial class MainWindowViewModel : ObservableObject
         {
             File.Delete(SelectedBackup.FileName);
             SelectedSave.GetBackups(PlatformPaths.BackupDirectory);
-            System.Console.WriteLine("hafta delete it..");
+            Console.WriteLine("hafta delete it..");
         }
     }
     public MenuViewModel Menu { get; }

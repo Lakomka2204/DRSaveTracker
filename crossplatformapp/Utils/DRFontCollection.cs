@@ -8,7 +8,5 @@ public sealed class DRFontCollection : EmbeddedFontCollection
         new Uri("fonts:DRFonts", UriKind.Absolute),
         new Uri("avares://DRSaveTracker/Assets/Fonts")
     )
-    {
-        
-    }
+    { }
 }

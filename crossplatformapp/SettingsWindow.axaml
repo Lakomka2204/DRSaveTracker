@@ -13,46 +13,46 @@
         x:DataType="local:SettingsViewModel"
         Title="Settings"
         >
-        <Grid>
-            <StackPanel Orientation="Vertical">
-                <TextBlock 
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <TextBlock
                 Text="Settings"
-FontWeight="Bold"
-FontSize="24"
-Margin="10,5"
+                FontWeight="Bold"
+                FontSize="24"
+                Margin="10,5"
                 />
-                <StackPanel Margin="20,10">
+            <StackPanel Margin="20,10">
 
-                    <TextBlock
+                <TextBlock
                     Text="Run on system startup"
                     />
-                    <TextBlock
+                <TextBlock
                     IsVisible="{Binding IsStartupLocked}"
                     Text="(disabled by user)"
                     />
-                    <ToggleSwitch 
+                <ToggleSwitch
                     IsEnabled="{Binding !IsStartupLocked}"
                     IsChecked="{Binding Path=IsStartupEnabled, Mode=TwoWay}"
                     >
-                    
-                    </ToggleSwitch>
-                </StackPanel>
-                <StackPanel Margin="20,10">
 
-                    <TextBlock
+                </ToggleSwitch>
+            </StackPanel>
+            <StackPanel Margin="20,10">
+
+                <TextBlock
                     Text="Hide in system tray on close"
                     />
-                    <ToggleSwitch 
+                <ToggleSwitch
                     IsChecked="{Binding Path=Settings.HideOnClose, Mode=TwoWay}"
                     >
-                    </ToggleSwitch>
-                </StackPanel>
+                </ToggleSwitch>
             </StackPanel>
-            <TextBlock
+        </StackPanel>
+        <TextBlock
             Text="{Binding AppVersion, StringFormat='Version: {0}'}"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Margin="10"
             />
-        </Grid>
+    </Grid>
 </Window>

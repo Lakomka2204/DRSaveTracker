@@ -14,229 +14,229 @@
         Icon="/Assets/icon.ico"
         Title="DR Save Tracker"
         >
-        <Window.Resources>
-          <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-              <ResourceDictionary x:Key="Dark">
-                <DropShadowEffect
-                x:Key="TitleEffect"
-                    BlurRadius="0"
-                    OffsetX="1"
-                    OffsetY="1"
-                />
-              </ResourceDictionary>
-              <ResourceDictionary x:Key="Light">
-                <DropShadowEffect
-                x:Key="TitleEffect"
-                Opacity="0"
-                />
-              </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
-          </ResourceDictionary>
-        </Window.Resources>
-    <DockPanel>
-    <Menu 
-    DockPanel.Dock="Top"
-    BorderThickness="0,0,0,1" 
-    BorderBrush="{DynamicResource SystemControlBackgroundBaseLowBrush}"
-    DataContext="{Binding Menu}"
+  <Window.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Dark">
+          <DropShadowEffect
+            x:Key="TitleEffect"
+            BlurRadius="0"
+            OffsetX="1"
+            OffsetY="1"
+            />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Light">
+          <DropShadowEffect
+            x:Key="TitleEffect"
+            Opacity="0"
+            />
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+  </Window.Resources>
+  <DockPanel>
+    <Menu
+      DockPanel.Dock="Top"
+      BorderThickness="0,0,0,1"
+      BorderBrush="{DynamicResource SystemControlBackgroundBaseLowBrush}"
+      DataContext="{Binding Menu}"
       >
       <MenuItem Header="_Menu">
-        <MenuItem 
-        Header="_Settings"
-        Command="{Binding OpenSettingsCommand}"
-        />
-        <MenuItem 
-        Header="_Hide"
-        Command="{Binding HideWindowCommand}"
-        />
+        <MenuItem
+          Header="_Settings"
+          Command="{Binding OpenSettingsCommand}"
+          />
+        <MenuItem
+          Header="_Hide"
+          Command="{Binding HideWindowCommand}"
+          />
         <Separator/>
         <MenuItem Header="_End" Command="{Binding QuitAppCommand}"/>
       </MenuItem>
       <MenuItem Header="_View">
         <MenuItem Header="_Display style">
-          <MenuItem 
+          <MenuItem
             Header="_Normal"
             ToggleType="Radio"
             GroupName="Density"
-            IsChecked="{Binding !IsCompact, Mode=TwoWay}" 
-          />
-          <MenuItem 
+            IsChecked="{Binding !IsCompact, Mode=TwoWay}"
+            />
+          <MenuItem
             Header="_Compact"
             ToggleType="Radio"
             GroupName="Density"
-            IsChecked="{Binding IsCompact, Mode=TwoWay}" 
-          />
+            IsChecked="{Binding IsCompact, Mode=TwoWay}"
+            />
         </MenuItem>
         <MenuItem Header="_Font">
           <MenuItem
-          Header="_Natural"
-          ToggleType="Radio"
-          GroupName="Font"
-          IsChecked="{Binding !IsSysFont, Mode=TwoWay}"
-          />
+            Header="_Natural"
+            ToggleType="Radio"
+            GroupName="Font"
+            IsChecked="{Binding !IsSysFont, Mode=TwoWay}"
+            />
           <MenuItem
             Header="_System"
             ToggleType="Radio"
             GroupName="Font"
             IsChecked="{Binding IsSysFont, Mode=TwoWay}"
             />
-          </MenuItem>
+        </MenuItem>
       </MenuItem>
     </Menu>
 
-    <Border 
-      DockPanel.Dock="Bottom" 
-      BorderThickness="0,1,0,0" 
+    <Border
+      DockPanel.Dock="Bottom"
+      BorderThickness="0,1,0,0"
       BorderBrush="{DynamicResource SystemControlBackgroundBaseLowBrush}">
       <StackPanel Orientation="Horizontal">
-        <TextBlock 
-        Text="{Binding 
-        Path=Sfw.IsEnabled, 
-        StringFormat='Watcher Enabled: {0}', 
-        Converter={StaticResource BoolToYesNoConverter}
-        }"
-        Margin="4"
-        />
-        <TextBlock 
-        Text="{Binding 
-        Path=SelectedSave.OriginalFileName, 
-        StringFormat='Selected save: {0}',
-        FallbackValue='Selected save: None'
-        }"
-        Margin="4"
-        />
-        <TextBlock 
-        Text="{Binding 
-        Path=SelectedBackup.LastWrite, 
-        FallbackValue='Selected backup from: Never', 
-        StringFormat='Selected backup from: {0:G}'
-        }"
-        Margin="4"
-        />
+        <TextBlock
+          Text="{Binding
+          Path=Sfw.IsEnabled,
+          StringFormat='Watcher Enabled: {0}',
+          Converter={StaticResource BoolToYesNoConverter}
+          }"
+          Margin="4"
+          />
+        <TextBlock
+          Text="{Binding
+          Path=SelectedSave.OriginalFileName,
+          StringFormat='Selected save: {0}',
+          FallbackValue='Selected save: None'
+          }"
+          Margin="4"
+          />
+        <TextBlock
+          Text="{Binding
+          Path=SelectedBackup.LastWrite,
+          FallbackValue='Selected backup from: Never',
+          StringFormat='Selected backup from: {0:G}'
+          }"
+          Margin="4"
+          />
       </StackPanel>
-      </Border>
+    </Border>
 
     <Grid ColumnDefinitions="6*,4,4*">
       <TableView
-      Grid.Column="0"
-      SelectionMode="Single"
-      ItemsSource="{Binding Sfw.Saves}"
-      FontWeight="Bold"
-      SelectedItem="{Binding SelectedSave, Mode=TwoWay}"
-      >
-      <TableView.Columns>
-        <TableViewColumn 
-        Header="SLOT" 
-        Width="2*"
+        Grid.Column="0"
+        SelectionMode="Single"
+        ItemsSource="{Binding Sfw.Saves}"
+        FontWeight="Bold"
+        SelectedItem="{Binding SelectedSave, Mode=TwoWay}"
         >
-          <TableViewColumn.CellTemplate>
-            <DataTemplate>
-              <TextBlock
-              Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
-              Effect="{DynamicResource ResourceKey=TitleEffect}"
-              >
-                <TextBlock.Text>
-                  <MultiBinding StringFormat="Ch. {0}-{1}">
-                    <Binding Path="Chapter"/>
-                    <Binding Path="Slot" />
-                  </MultiBinding>
-                </TextBlock.Text>
-                <ToolTip.Tip>
-                  <MultiBinding StringFormat="Ch. {0}-{1}">
-                    <Binding Path="Chapter"/>
-                    <Binding Path="Slot" />
-                  </MultiBinding>
-                </ToolTip.Tip>
-              </TextBlock>
-            </DataTemplate>
-          </TableViewColumn.CellTemplate>
-        </TableViewColumn>
-        <TableViewColumn Header="NAME" Width="3*">
-          <TableViewColumn.CellTemplate>
-            <DataTemplate>
-              <TextBlock 
-              Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
-              Text="{Binding Name}" 
-              Effect="{DynamicResource ResourceKey=TitleEffect}"
-              ToolTip.Tip="{Binding Name}"
-              >
-            </TextBlock>
-            </DataTemplate>
-          </TableViewColumn.CellTemplate>
-        </TableViewColumn>       
-        <TableViewColumn Header="PLACE" Width="4*">
-          <TableViewColumn.CellTemplate>
-            <DataTemplate>
-              <TextBlock 
-              Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
-              Effect="{DynamicResource ResourceKey=TitleEffect}"
-              
-              Text="{Binding RoomName}" 
-              ToolTip.Tip="{Binding RoomName}"
-              >
-              </TextBlock>
-            </DataTemplate>
-          </TableViewColumn.CellTemplate>
-        </TableViewColumn>
-        <TableViewColumn Header="TIME" Width="2*">
-          <TableViewColumn.CellTemplate>
-            <DataTemplate>
-              <TextBlock 
-              Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
-              Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}" 
-              Effect="{DynamicResource ResourceKey=TitleEffect}"
-              ToolTip.Tip="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
-              >
-              </TextBlock>
-            </DataTemplate>
-          </TableViewColumn.CellTemplate>
-        </TableViewColumn>
-        <TableViewColumn Header="ACCESS" Width="4*">
-          <TableViewColumn.CellTemplate>
-            <DataTemplate>
-              <TextBlock 
-              Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
-              Text="{Binding LastWrite, StringFormat=g}" 
-              Effect="{DynamicResource ResourceKey=TitleEffect}"
-              ToolTip.Tip="{Binding LastWrite, StringFormat=R}"
-              >
-            </TextBlock>
-            </DataTemplate>
-          </TableViewColumn.CellTemplate>
-        </TableViewColumn>
-      </TableView.Columns>
-    </TableView>
+        <TableView.Columns>
+          <TableViewColumn
+            Header="SLOT"
+            Width="2*"
+            >
+            <TableViewColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock
+                  Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
+                  Effect="{DynamicResource ResourceKey=TitleEffect}"
+                  >
+                  <TextBlock.Text>
+                    <MultiBinding StringFormat="Ch. {0}-{1}">
+                      <Binding Path="Chapter"/>
+                      <Binding Path="Slot" />
+                    </MultiBinding>
+                  </TextBlock.Text>
+                  <ToolTip.Tip>
+                    <MultiBinding StringFormat="Ch. {0}-{1}">
+                      <Binding Path="Chapter"/>
+                      <Binding Path="Slot" />
+                    </MultiBinding>
+                  </ToolTip.Tip>
+                </TextBlock>
+              </DataTemplate>
+            </TableViewColumn.CellTemplate>
+          </TableViewColumn>
+          <TableViewColumn Header="NAME" Width="3*">
+            <TableViewColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock
+                  Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
+                  Text="{Binding Name}"
+                  Effect="{DynamicResource ResourceKey=TitleEffect}"
+                  ToolTip.Tip="{Binding Name}"
+                  >
+                </TextBlock>
+              </DataTemplate>
+            </TableViewColumn.CellTemplate>
+          </TableViewColumn>
+          <TableViewColumn Header="PLACE" Width="4*">
+            <TableViewColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock
+                  Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
+                  Effect="{DynamicResource ResourceKey=TitleEffect}"
+
+                  Text="{Binding RoomName}"
+                  ToolTip.Tip="{Binding RoomName}"
+                  >
+                </TextBlock>
+              </DataTemplate>
+            </TableViewColumn.CellTemplate>
+          </TableViewColumn>
+          <TableViewColumn Header="TIME" Width="2*">
+            <TableViewColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock
+                  Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
+                  Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
+                  Effect="{DynamicResource ResourceKey=TitleEffect}"
+                  ToolTip.Tip="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
+                  >
+                </TextBlock>
+              </DataTemplate>
+            </TableViewColumn.CellTemplate>
+          </TableViewColumn>
+          <TableViewColumn Header="ACCESS" Width="4*">
+            <TableViewColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock
+                  Foreground="{Binding Chapter, Converter={StaticResource ChapterColorConverter}}"
+                  Text="{Binding LastWrite, StringFormat=g}"
+                  Effect="{DynamicResource ResourceKey=TitleEffect}"
+                  ToolTip.Tip="{Binding LastWrite, StringFormat=R}"
+                  >
+                </TextBlock>
+              </DataTemplate>
+            </TableViewColumn.CellTemplate>
+          </TableViewColumn>
+        </TableView.Columns>
+      </TableView>
       <GridSplitter Grid.Column="1" Width="4"/>
-      <Grid 
-      Grid.Column="2" 
-      RowDefinitions="*,Auto"
-      
-      >
+      <Grid
+        Grid.Column="2"
+        RowDefinitions="*,Auto"
+
+        >
         <TableView
           Grid.Row="0"
           SelectionMode="Single"
           ItemsSource="{Binding SelectedSave?.Backups, FallbackValue=[]}"
           FontWeight="Bold"
           SelectedItem="{Binding SelectedBackup, Mode=TwoWay}"
-        >
+          >
           <TableView.Columns>
             <TableViewColumn Header="NAME" Width="2*">
               <TableViewColumn.CellTemplate>
                 <DataTemplate x:DataType="drstcore:SaveFileInfo">
                   <TextBlock
-                  Text="{Binding Name}"
-                  Effect="{DynamicResource ResourceKey=TitleEffect}"
-                  ToolTip.Tip="{Binding Name}"
-                  >
-                  <TextBlock.Foreground>
-                    <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
-                      <Binding ElementName="ROOTS" Path="DataContext.SelectedSave"/>
-                      <Binding/>
-                    </MultiBinding>
-                  </TextBlock.Foreground>
-                  
-                </TextBlock>
+                    Text="{Binding Name}"
+                    Effect="{DynamicResource ResourceKey=TitleEffect}"
+                    ToolTip.Tip="{Binding Name}"
+                    >
+                    <TextBlock.Foreground>
+                      <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
+                        <Binding ElementName="ROOTS" Path="DataContext.SelectedSave"/>
+                        <Binding/>
+                      </MultiBinding>
+                    </TextBlock.Foreground>
+
+                  </TextBlock>
                 </DataTemplate>
               </TableViewColumn.CellTemplate>
             </TableViewColumn>
@@ -244,17 +244,17 @@
               <TableViewColumn.CellTemplate>
                 <DataTemplate x:DataType="drstcore:SaveFileInfo">
                   <TextBlock
-                  Text="{Binding RoomName}"
-                  Effect="{DynamicResource ResourceKey=TitleEffect}"
-                  ToolTip.Tip="{Binding RoomName}"
-                  >
-                  <TextBlock.Foreground>
-                    <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
-                      <Binding ElementName="ROOTS" Path="DataContext.SelectedSave"/>
-                      <Binding/>
-                    </MultiBinding>
-                  </TextBlock.Foreground>
-                </TextBlock>
+                    Text="{Binding RoomName}"
+                    Effect="{DynamicResource ResourceKey=TitleEffect}"
+                    ToolTip.Tip="{Binding RoomName}"
+                    >
+                    <TextBlock.Foreground>
+                      <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
+                        <Binding ElementName="ROOTS" Path="DataContext.SelectedSave"/>
+                        <Binding/>
+                      </MultiBinding>
+                    </TextBlock.Foreground>
+                  </TextBlock>
                 </DataTemplate>
               </TableViewColumn.CellTemplate>
             </TableViewColumn>
@@ -262,17 +262,17 @@
               <TableViewColumn.CellTemplate>
                 <DataTemplate x:DataType="drstcore:SaveFileInfo">
                   <TextBlock
-                  Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
-                  Effect="{DynamicResource ResourceKey=TitleEffect}"
-                  ToolTip.Tip="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
-                  >
-                <TextBlock.Foreground>
-                    <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
-                      <Binding ElementName="ROOTS" Path="DataContext.SelectedSave"/>
-                      <Binding/>
-                    </MultiBinding>
-                  </TextBlock.Foreground>
-                </TextBlock>
+                    Text="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
+                    Effect="{DynamicResource ResourceKey=TitleEffect}"
+                    ToolTip.Tip="{Binding PlayTime, Converter={StaticResource TimeConverter}}"
+                    >
+                    <TextBlock.Foreground>
+                      <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
+                        <Binding ElementName="ROOTS" Path="DataContext.SelectedSave"/>
+                        <Binding/>
+                      </MultiBinding>
+                    </TextBlock.Foreground>
+                  </TextBlock>
                 </DataTemplate>
               </TableViewColumn.CellTemplate>
             </TableViewColumn>
@@ -280,36 +280,36 @@
               <TableViewColumn.CellTemplate>
                 <DataTemplate x:DataType="drstcore:SaveFileInfo">
                   <TextBlock
-                  Text="{Binding LastWrite, StringFormat=g}"
-                  Effect="{DynamicResource ResourceKey=TitleEffect}"
-                  ToolTip.Tip="{Binding LastWrite, StringFormat=R}"
-                  >
-                  <TextBlock.Foreground>
-                    <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
-                      <Binding ElementName="ROOTS" Path="DataContext.SelectedSave"/>
-                      <Binding/>
-                    </MultiBinding>
-                  </TextBlock.Foreground>
-                </TextBlock>
+                    Text="{Binding LastWrite, StringFormat=g}"
+                    Effect="{DynamicResource ResourceKey=TitleEffect}"
+                    ToolTip.Tip="{Binding LastWrite, StringFormat=R}"
+                    >
+                    <TextBlock.Foreground>
+                      <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
+                        <Binding ElementName="ROOTS" Path="DataContext.SelectedSave"/>
+                        <Binding/>
+                      </MultiBinding>
+                    </TextBlock.Foreground>
+                  </TextBlock>
                 </DataTemplate>
               </TableViewColumn.CellTemplate>
             </TableViewColumn>
-            </TableView.Columns>
+          </TableView.Columns>
         </TableView>
-        <StackPanel 
-        Grid.Row="1"
-        Orientation="Horizontal" 
-        IsVisible="{Binding SelectedBackup, Converter={StaticResource NullToBoolConverter}}"
-        >
-          <Button 
-          Content="Restore"
-          Command="{Binding RestoreSelectedBackupCommand}"
-          />
-          <Button 
-          Content="Delete"
-          Command="{Binding DeleteBackupCommand}"
-          />
-          </StackPanel>
+        <StackPanel
+          Grid.Row="1"
+          Orientation="Horizontal"
+          IsVisible="{Binding SelectedBackup, Converter={StaticResource NullToBoolConverter}}"
+          >
+          <Button
+            Content="Restore"
+            Command="{Binding RestoreSelectedBackupCommand}"
+            />
+          <Button
+            Content="Delete"
+            Command="{Binding DeleteBackupCommand}"
+            />
+        </StackPanel>
       </Grid>
     </Grid>
   </DockPanel>

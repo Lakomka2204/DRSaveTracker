@@ -29,7 +29,7 @@
             if (!File.Exists(fullName))
                 return null;
             FileInfo fi = new(fullName);
-            var age = fi.LastWriteTime - DateTime.Now;
+            var age = DateTime.Now - fi.LastWriteTime;
             if (age.TotalDays > 30)
                 return null;
             using StreamReader sr = new(fi.OpenRead());
@@ -40,42 +40,41 @@
             lightWorldDict.Clear();
             darkWorldDict.Clear();
         }
-        public async Task LoadRoomInfo()
+        public async Task LoadRoomInfo(bool outdatedCache = false)
         {
             for (int i = 1; i <= MAX_CHAPTERS; i++)
             {
                 try
                 {
-                    
-                var cUrl = string.Format(URL, i);
-                var filename = Path.GetFileName(cUrl);
-                var csv = await GetFromCache(filename);
-                if (csv == null)
-                {
-                    var response = await client.GetAsync(cUrl);
-                    if (!response.IsSuccessStatusCode) continue;
-                    csv = await response.Content.ReadAsStringAsync();
-                    await WriteToCache(filename, csv);
-                }
-                using var reader = new StringReader(csv);
-                await reader.ReadLineAsync();
-                string? line;
-                while ((line = await reader.ReadLineAsync()) != null)
-                {
-                    if (string.IsNullOrWhiteSpace(line))
-                        continue;
+                    var cUrl = string.Format(URL, i);
+                    var filename = Path.GetFileName(cUrl);
+                    var csv = await GetFromCache(filename);
+                    if (csv == null)
+                    {
+                        var response = await client.GetAsync(cUrl);
+                        if (!response.IsSuccessStatusCode) continue;
+                        csv = await response.Content.ReadAsStringAsync();
+                        await WriteToCache(filename, csv);
+                    }
+                    using var reader = new StringReader(csv);
+                    await reader.ReadLineAsync();
+                    string? line;
+                    while ((line = await reader.ReadLineAsync()) != null)
+                    {
+                        if (string.IsNullOrWhiteSpace(line))
+                            continue;
 
-                    var fields = line.Split(',');
+                        var fields = line.Split(',');
 
-                    int lwId = int.Parse(fields[0]);
-                    string roomName = fields[2];
-                    lightWorldDict[lwId] = roomName;
-                    if (!int.TryParse(fields[1], out int dwId))
-                        continue;
+                        int lwId = int.Parse(fields[0]);
+                        string roomName = fields[2];
+                        lightWorldDict[lwId] = roomName;
+                        if (!int.TryParse(fields[1], out int dwId))
+                            continue;
 
-                    if (!darkWorldDict.ContainsKey(dwId))
-                        darkWorldDict[dwId] = roomName;
-                }
+                        if (!darkWorldDict.ContainsKey(dwId))
+                            darkWorldDict[dwId] = roomName;
+                    }
                 }
                 catch
                 {

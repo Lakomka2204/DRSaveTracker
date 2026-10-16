@@ -24,10 +24,8 @@ namespace crossplatformapp.Utils
         {
             if (Equals(field, value))
                 return;
-
             field = value;
             Save();
-
             PropertyChanged?.Invoke(this, new(propertyName));
         }
 
@@ -63,18 +61,14 @@ namespace crossplatformapp.Utils
             {
                 if (!Directory.Exists(PlatformPaths.BaseDirectory))
                     Directory.CreateDirectory(PlatformPaths.BaseDirectory);
-
                 if (!File.Exists(PlatformPaths.SettingsLocation))
                 {
                     var s = new Settings();
                     s.Save();
                     return s;
                 }
-
                 var json = File.ReadAllText(PlatformPaths.SettingsLocation);
-
                 var settings = JsonSerializer.Deserialize<Settings>(json, JsonOptions);
-
                 if (settings == null)
                     return new Settings();
 
@@ -89,14 +83,10 @@ namespace crossplatformapp.Utils
         public void Save()
         {
             if (!Directory.Exists(PlatformPaths.BaseDirectory))
-                    Directory.CreateDirectory(PlatformPaths.BaseDirectory);
-
+                Directory.CreateDirectory(PlatformPaths.BaseDirectory);
             var json = JsonSerializer.Serialize(this, JsonOptions);
-
             var temp = PlatformPaths.SettingsLocation + ".tmp";
-
             File.WriteAllText(temp, json);
-
             File.Move(temp, PlatformPaths.SettingsLocation, true);
         }
     }

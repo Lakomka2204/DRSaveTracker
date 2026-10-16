@@ -16,10 +16,10 @@ public static class PlatformPaths
                 Environment.SpecialFolder.LocalApplicationData),
             Program.GameName);
             else if (OperatingSystem.IsLinux())
-                throw new NotImplementedException("AAAAAAAAAAAAAA test on linux you moron");
+                throw new NotImplementedException("There isn't official DELTARUNE build on linux.");
             else if (OperatingSystem.IsMacOS())
-                throw new NotImplementedException("Buy me a new mac to test this out ");
-            else throw new NotImplementedException("Platform not supported");
+                throw new NotImplementedException("Buy me a new mac to test this out.");
+            else throw new NotImplementedException("Platform not supported.");
         }
     }
     public static string BaseDirectory
@@ -32,9 +32,9 @@ public static class PlatformPaths
                         Environment.SpecialFolder.LocalApplicationData),
                     Program.AppName);
             else if (OperatingSystem.IsLinux())
-                throw new NotImplementedException("AAAAAAAAAAAAAA test on linux you moron");
+                throw new NotImplementedException("There isn't official DELTARUNE build on linux.");
             else if (OperatingSystem.IsMacOS())
-                throw new NotImplementedException("Buy me a new mac to test this out ");
+                throw new NotImplementedException("Buy me a new mac to test this out.");
             else throw new NotImplementedException("Platform not supported");
         }
     }
@@ -48,6 +48,6 @@ public static class PlatformPaths
     }
     public static string SettingsLocation
     {
-        get { return Path.Join(BaseDirectory,"Settings.json"); }
+        get { return Path.Join(BaseDirectory, "Settings.json"); }
     }
 }

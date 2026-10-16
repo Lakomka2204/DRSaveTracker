@@ -19,14 +19,14 @@ public partial class App : Application
         System.Console.WriteLine(typeof(App).Assembly.GetName().Name);
         AvaloniaXamlLoader.Load(this);
         if (Current != null)
-            Current.Dispatcher.UnhandledException 
+            Current.Dispatcher.UnhandledException
                 += UnhandledException;
     }
     private Window? _window;
     private TrayIcon? _trayIcon;
-    private async void UnhandledException(object sender,DispatcherUnhandledExceptionEventArgs args)
+    private async void UnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args)
     {
-        var box = MessageBoxes.GetOwnMBox("Critical error",args.Exception.Message, MsBox.Avalonia.Enums.Icon.Error);
+        var box = MessageBoxes.GetOwnMBox("Critical error", args.Exception.Message, MsBox.Avalonia.Enums.Icon.Error);
         await box.ShowWindowAsync();
         EndWindow();
     }
@@ -65,7 +65,7 @@ public partial class App : Application
     {
         Program.GetLife()?.Shutdown(0);
     }
-    private void ToggleTrayIcon(object? sender,AvaloniaPropertyChangedEventArgs args)
+    private void ToggleTrayIcon(object? sender, AvaloniaPropertyChangedEventArgs args)
     {
         if (args.Property != Visual.IsVisibleProperty)
             return;
@@ -74,7 +74,7 @@ public partial class App : Application
         if (_trayIcon == null)
             return;
         _trayIcon.IsVisible = !window.IsVisible;
-        
+
     }
     public override void OnFrameworkInitializationCompleted()
     {
@@ -83,9 +83,9 @@ public partial class App : Application
             _window = new MainWindow();
             _window.Closing += WindowClosing;
             _window.PropertyChanged += ToggleTrayIcon;
-            
+
             bool silent = desktop.Args is not null &&
-                Array.Exists(desktop.Args,f => f is "-s");
+                Array.Exists(desktop.Args, f => f is "-s");
             _trayIcon = TrayIcon.GetIcons(this)?.FirstOrDefault();
             if (silent)
             {
@@ -93,8 +93,7 @@ public partial class App : Application
             }
             else
             {
-            desktop.MainWindow = _window;
-                
+                desktop.MainWindow = _window;
             }
         }
 

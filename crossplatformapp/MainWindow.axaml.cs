@@ -5,7 +5,7 @@ namespace crossplatformapp;
 
 public partial class MainWindow : Window
 {
-    private MainWindowViewModel model;
+    private readonly MainWindowViewModel model;
     public MainWindow()
     {
         model = new MainWindowViewModel(this);
