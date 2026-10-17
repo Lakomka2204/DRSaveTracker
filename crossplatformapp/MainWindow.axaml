@@ -296,20 +296,66 @@
             </TableViewColumn>
           </TableView.Columns>
         </TableView>
-        <StackPanel
-          Grid.Row="1"
-          Orientation="Horizontal"
-          IsVisible="{Binding SelectedBackup, Converter={StaticResource NullToBoolConverter}}"
-          >
-          <Button
-            Content="Restore"
-            Command="{Binding RestoreSelectedBackupCommand}"
-            />
-          <Button
-            Content="Delete"
-            Command="{Binding DeleteBackupCommand}"
-            />
-        </StackPanel>
+        <Border
+  Grid.Row="1"
+  IsVisible="{Binding SelectedBackup, Converter={StaticResource NullToBoolConverter}}"
+  
+  BorderThickness="2"
+  Padding="{DynamicResource ButtonPadding}"
+  >
+  <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+    <TextBlock
+      Grid.Row="0"
+      Grid.Column="0"
+      Text="{Binding SelectedBackup.Name}"
+      FontWeight="Bold"
+      TextTrimming="CharacterEllipsis"
+      Margin="{DynamicResource ButtonPadding}"
+      />
+    <TextBlock
+      Grid.Row="0"
+      Grid.Column="1"
+      Text="{Binding SelectedBackup.PlayTime, Converter={StaticResource TimeConverter}}"
+      FontWeight="Bold"
+      Margin="{DynamicResource ButtonPadding}"
+      />
+    <Grid
+      Grid.Row="1"
+      Grid.Column="0"
+      Grid.ColumnSpan="2"
+      ColumnDefinitions="0.08*,*"
+      >
+      <TextBlock
+        Grid.Column="1"
+        Text="{Binding SelectedBackup.RoomName}"
+        FontWeight="Bold"
+        TextTrimming="CharacterEllipsis"
+        Margin="{DynamicResource ButtonPadding}"
+        />
+    </Grid>
+    <Grid
+      Grid.Row="2"
+      Grid.Column="0"
+      Grid.ColumnSpan="2"
+      Background="{DynamicResource DataGridColumnHeaderBackgroundBrush}"
+      
+      ColumnDefinitions="Auto,*,Auto"
+      Margin="{DynamicResource ButtonPadding}"
+      >
+      <Button
+        Grid.Column="0"
+        Content="Restore"
+        Command="{Binding RestoreSelectedBackupCommand}"
+        />
+      <Button
+        Grid.Column="2"
+        Content="Delete"
+        Command="{Binding DeleteBackupCommand}"
+        />
+    </Grid>
+
+  </Grid>
+</Border>
       </Grid>
     </Grid>
   </DockPanel>
