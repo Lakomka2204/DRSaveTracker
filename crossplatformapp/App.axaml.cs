@@ -1,13 +1,14 @@
 using System;
 using System.Linq;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Notifications;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.Input;
 using crossplatformapp.Utils;
+using MsBox.Avalonia;
 
 namespace crossplatformapp;
 
@@ -76,8 +77,30 @@ public partial class App : Application
         _trayIcon.IsVisible = !window.IsVisible;
 
     }
-    public override void OnFrameworkInitializationCompleted()
+    private static Mutex? _mutex;
+    public override async void OnFrameworkInitializationCompleted()
     {
+        _mutex = new(
+            initiallyOwned: true,
+            name: @"Local\DRSaveTracker",
+            createdNew: out bool createNew
+        );
+
+        if (!createNew)
+        {
+            Console.WriteLine("WARNING Another instance");
+            await MessageBoxManager.GetMessageBoxStandard(
+                new MsBox.Avalonia.Dto.MessageBoxStandardParams()
+                {
+                    ContentMessage="Another instance has been already launched.",
+                    ShowInCenter = true,
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                    Topmost = true
+                }
+            ).ShowAsync();
+            EndWindow();
+            return;
+        }
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             _window = new MainWindow();

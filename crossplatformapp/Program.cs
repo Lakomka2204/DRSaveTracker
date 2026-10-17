@@ -1,7 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using crossplatformapp.Utils;
+using MsBox.Avalonia;
 using System;
+using System.Threading;
 
 namespace crossplatformapp;
 
@@ -18,7 +20,7 @@ class Program
         Console.WriteLine("Main entry point start, args: {0}", string.Join(' ', args));
         BuildAvaloniaApp()
         .StartWithClassicDesktopLifetime(args, Avalonia.Controls.ShutdownMode.OnExplicitShutdown);
-        Console.WriteLine("Main entry point end");
+        Console.WriteLine("Main entry point end.");
     }
     public static IClassicDesktopStyleApplicationLifetime? GetLife()
     {
