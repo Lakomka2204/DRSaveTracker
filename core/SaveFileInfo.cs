@@ -7,7 +7,7 @@ namespace DRSTCore
 {
     public partial class SaveFileInfo : ObservableObject
     {
-        [GeneratedRegex(@"filech(\d)_([012])")]
+        [GeneratedRegex(@"^filech(\d)_([012])(?:_\d+)?$")]
         private static partial Regex FileNameRegex();
         [ObservableProperty]
         private int chapter = 0;
@@ -58,7 +58,7 @@ namespace DRSTCore
             LastWrite = FileInfo.LastWriteTime;
             using StreamReader sr = new(stream);
             var lines = sr.ReadLines();
-            Name = lines.FirstOrDefault() ?? "EMPTY";
+            Name = lines.FirstOrDefault() ?? "[EMPTY]";
             var rs = lines.TakeLast(2).ToArray();
             var room = rs[0];
             Room = int.Parse(room);
