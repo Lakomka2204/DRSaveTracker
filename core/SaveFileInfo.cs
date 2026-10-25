@@ -31,6 +31,8 @@ namespace DRSTCore
         private bool fileExists = false;
         [ObservableProperty]
         private SaveFileInfo[] backups = [];
+        [ObservableProperty]
+        private long backupSize = 0;
         public RoomMapper? Mapper { get; set; }
         public FileInfo FileInfo { get; set; }
         public byte[] Hash {get;set;} = [];
@@ -84,8 +86,8 @@ namespace DRSTCore
         {
             var concreteBackupFolder = Path.Join(backupFolder, OriginalFileName);
             if (!Directory.Exists(concreteBackupFolder)) return;
-            // сделать так чтобы первый отображался как последний (latest)
-
+            BackupSize = new DirectoryInfo(concreteBackupFolder).EnumerateFiles().Sum(f => f.Length);
+            
             Backups = [.. Directory
                 .GetFiles(concreteBackupFolder,"filech*")
                 .Select(f => new SaveFileInfo(f, Mapper))

@@ -96,12 +96,15 @@ public partial class SaveFileWatcher : ObservableObject
             .Select(sg => sg.First())
             .OrderBy(s => s.Chapter)
             .ThenBy(s => s.Slot);
+        BackupSizes = allSaves.Sum(s => s.BackupSize);
         Saves = new ObservableCollection<SaveFileInfo>(allSaves);
     }
     private readonly RoomMapper rmi;
     private readonly FileSystemWatcher mainWatcher;
     [ObservableProperty]
     private ObservableCollection<SaveFileInfo> saves;
+    [ObservableProperty]
+    private long backupSizes = 0;
     public bool IsEnabled
     {
         get { return mainWatcher.EnableRaisingEvents; }

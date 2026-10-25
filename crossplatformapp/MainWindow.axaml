@@ -98,6 +98,14 @@
           }"
           Margin="4"
           />
+          <TextBlock
+          Text="{Binding
+          Path=Sfw.BackupSizes,
+          StringFormat='Backup Sizes: {0}'
+          Converter={StaticResource LongToSizeConverter}
+          }"
+          Margin="4"
+          />
         <TextBlock
           Text="{Binding
           Path=SelectedSave.OriginalFileName,

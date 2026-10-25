@@ -51,6 +51,7 @@
             <utils:ChapterColorConverter x:Key="ChapterColorConverter"/>
             <utils:LatestBackupColorConverter x:Key="LatestBackupColorConverter"/>
             <utils:BoolToYesNoConverter x:Key="BoolToYesNoConverter"/>
+            <utils:LongToSizeConverter x:Key="LongToSizeConverter"/>
             <FontFamily x:Key="DRFontFamily">fonts:DRFonts#8-bit Operator+, fonts:DRFonts#JF Dot Shinonome Gothic 14</FontFamily>
     </Application.Resources>
 </Application>

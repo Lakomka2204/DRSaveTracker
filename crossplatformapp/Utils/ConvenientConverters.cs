@@ -113,3 +113,36 @@ public class LatestBackupColorConverter : IMultiValueConverter
     }
 
 }
+
+public class LongToSizeConverter : IValueConverter
+{
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is null)
+            return "0 Bytes";
+        
+        if (!long.TryParse(value.ToString(), out long bytes))
+            return "0 Bytes";
+            
+        if (bytes < 0)
+            return $"{bytes} Bytes";
+
+        string[] sizes = ["Bytes", "kB", "MB", "GB"];
+        double size = bytes;
+        int order = 0;
+
+        while (size >= 1024 && order < sizes.Length - 1)
+        {
+            order++;
+            size /= 1024;
+        }
+
+        return $"{size:0.##} {sizes[order]}";
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+
+}
