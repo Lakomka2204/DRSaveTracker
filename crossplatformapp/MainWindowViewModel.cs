@@ -24,7 +24,6 @@ public partial class MainWindowViewModel : ObservableObject
         {
             //! backup directory must be set before anything else!!!!
             BackupDirectory = PlatformPaths.BackupDirectory,
-            CacheDirectory = PlatformPaths.CacheDirectory,
             WatchDirectory = PlatformPaths.SaveDirectory,
             IsEnabled = true,
         };
@@ -69,6 +68,22 @@ public partial class MainWindowViewModel : ObservableObject
            Arguments = $"/select,\"{file}\"",
            UseShellExecute = true 
         });
+    }
+    [RelayCommand]
+    private async Task MakeBackupManual()
+    {
+        if (SelectedSave is null) return;
+        if (!SelectedSave.FileExists)
+        {
+            await MessageBoxes
+                .GetOwnMBox(
+                    "No file",
+                    "Cannot make backup of a file that does not exist!", 
+                    MsBox.Avalonia.Enums.Icon.Error)
+                    .ShowAsPopupAsync(mainWindow);
+            return;
+        }
+        SelectedSave.MakeBackup(Sfw.BackupDirectory);
     }
     [RelayCommand]
     private async Task RestoreSelectedBackup()

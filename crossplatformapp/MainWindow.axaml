@@ -143,7 +143,13 @@
                 <MenuItem 
                   Header="Open File in Explorer" 
                   Command="{Binding $parent[TableView].DataContext.OpenFileInExplorerCommand}"
-                  CommandParameter="{Binding}"/>
+                  CommandParameter="{Binding}"
+                  />
+                  <MenuItem
+Header="Make backup manually" 
+                  Command="{Binding $parent[TableView].DataContext.MakeBackupManualCommand}"
+                  CommandParameter="{Binding}"
+                  />
               </ContextMenu>
             </Setter>
           </ControlTheme>
