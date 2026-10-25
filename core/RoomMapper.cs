@@ -1,112 +1,52 @@
-﻿namespace DRSTCore
+﻿using System.Reflection;
+
+namespace DRSTCore
 {
     public class RoomMapper
     {
-        public string? CacheDirectory { get; set; }
         public RoomMapper()
         {
-            client = new HttpClient();
-            lightWorldDict = [];
-            darkWorldDict = [];
-        }
-        public RoomMapper(string cacheDir) : this()
-        {
-            CacheDirectory = cacheDir;
-        }
-        private async Task WriteToCache(string filename, string content)
-        {
-            if (CacheDirectory == null)
-                return;
-            if (!Directory.Exists(CacheDirectory))
-                Directory.CreateDirectory(CacheDirectory);
-            var fullName = Path.Join(CacheDirectory, filename);
-            using StreamWriter sw = new(fullName);
-            sw.Write(content);
-        }
-        private async Task<string?> GetFromCache(string filename)
-        {
-            var fullName = Path.Join(CacheDirectory, filename);
-            if (!File.Exists(fullName))
-                return null;
-            FileInfo fi = new(fullName);
-            var age = DateTime.Now - fi.LastWriteTime;
-            if (age.TotalDays > 30)
-                return null;
-            using StreamReader sr = new(fi.OpenRead());
-            return await sr.ReadToEndAsync();
-        }
-        public void UnloadRoomInfo()
-        {
-            lightWorldDict.Clear();
-            darkWorldDict.Clear();
-        }
-        public async Task LoadRoomInfo(bool outdatedCache = false)
-        {
-            for (int i = 1; i <= MAX_CHAPTERS; i++)
+            roomDict = [];
+            roomDict[0] = new string('-',12);
+            var asm = Assembly.GetExecutingAssembly();
+            using var stream = asm.GetManifestResourceStream("DRSTCore.Assets.rooms.csv");
+            if (stream is null)
             {
-                try
+                Console.WriteLine("Asset not found, will be using numbers");
+                return;
+            }
+            using StreamReader reader = new(stream);
+            reader.ReadLine();
+            string? line;
+            while((line = reader.ReadLine()) != null)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+                var fields = line.Split(',');
+                if (fields.Length < 4)
                 {
-                    var cUrl = string.Format(URL, i);
-                    var filename = Path.GetFileName(cUrl);
-                    var csv = await GetFromCache(filename);
-                    if (csv == null)
-                    {
-                        var response = await client.GetAsync(cUrl);
-                        if (!response.IsSuccessStatusCode) continue;
-                        csv = await response.Content.ReadAsStringAsync();
-                        await WriteToCache(filename, csv);
-                    }
-                    using var reader = new StringReader(csv);
-                    await reader.ReadLineAsync();
-                    string? line;
-                    while ((line = await reader.ReadLineAsync()) != null)
-                    {
-                        if (string.IsNullOrWhiteSpace(line))
-                            continue;
-
-                        var fields = line.Split(',');
-
-                        int lwId = int.Parse(fields[0]);
-                        string roomName = fields[2];
-                        lightWorldDict[lwId] = roomName;
-                        if (!int.TryParse(fields[1], out int dwId))
-                            continue;
-
-                        if (!darkWorldDict.ContainsKey(dwId))
-                            darkWorldDict[dwId] = roomName;
-                    }
-                }
-                catch
-                {
-                    // probably no internet
+                    Console.WriteLine("Warn: line has less than 4 elements, line: {0}",line);
                     continue;
                 }
+                int id = int.Parse(fields[0]);
+                string roomName = fields[3];
+                roomDict[id] = roomName;
             }
         }
-        private readonly HttpClient client;
-        public const string URL = "https://raw.githubusercontent.com/portaldash/deltarooms/refs/heads/main/chapter{0}_output.csv";
-        public const int MAX_CHAPTERS = 5;
-        private readonly Dictionary<int, string> lightWorldDict;
-        private readonly Dictionary<int, string> darkWorldDict;
+        ~RoomMapper()
+        {
+            roomDict.Clear();
+        }
+        private readonly Dictionary<int, string> roomDict;
 
         public string? this[int id]
         {
             get
             {
-                if (id > 1e4)
-                {
-                    if (darkWorldDict.TryGetValue(id, out var room))
-                        return room;
-                    else
-                        return null;
-                }
+                if (roomDict.TryGetValue(id, out var room))
+                    return room;
                 else
-                {
-                    if (lightWorldDict.TryGetValue(id, out var room))
-                        return room;
-                    else
-                        return null;
-                }
+                    return null;
             }
         }
     }

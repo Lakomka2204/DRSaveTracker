@@ -4,10 +4,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>DRSTCore</RootNamespace>
+    <AssemblyName>DRSTCore</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <EmbeddedResource Include="Assets\rooms.csv"/>
   </ItemGroup>
-
 </Project>

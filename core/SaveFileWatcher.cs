@@ -21,8 +21,6 @@ public partial class SaveFileWatcher : ObservableObject
     }
     public async Task Init()
     {
-        if (CacheDirectory != null)
-            await rmi.LoadRoomInfo();
         if (WatchDirectory != string.Empty)
             RefreshInfo();
     }
@@ -35,7 +33,6 @@ public partial class SaveFileWatcher : ObservableObject
             mainWatcher.Deleted -= WatcherChanged;
             mainWatcher.Dispose();
         }
-        rmi?.UnloadRoomInfo();
         Saves?.Clear();
     }
     public void UpdateFileInfo(string filename, string? name = null)
@@ -121,9 +118,4 @@ public partial class SaveFileWatcher : ObservableObject
         set { mainWatcher.Path = value; }
     }
     public string BackupDirectory { get; set; } = string.Empty;
-    public string? CacheDirectory
-    {
-        get { return rmi.CacheDirectory; }
-        set { rmi.CacheDirectory = value; }
-    }
 }

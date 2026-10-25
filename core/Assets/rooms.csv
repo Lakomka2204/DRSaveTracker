@@ -1,0 +1,91 @@
+id,localid,gmsname,name
+10283,2,room_krisroom,Kris's Room
+10316,35,room_dark1a,??????
+10321,40,room_dark_eyepuzzle,Eye Puzzle
+10326,45,room_castle_town,Castle Town
+10330,49,room_field_start,Field - Great Door
+10340,59,room_field_shop1,Field - Seam's Shop
+10349,68,room_field_checkers3,Field - Great Board
+10352,71,room_field_checkers7,Field - Great Board 2
+10354,73,room_forest_savepoint1,Forest - Entrance
+10363,82,room_forest_savepoint2,Forest - Bake Sale
+10371,90,room_forest_savepoint_relax,Forest - Before Maze
+10377,96,room_forest_savepoint3,Forest - After Maze
+10378,97,room_forest_fightsusie,Forest - Thrashing Room
+10388,107,room_cc_prison_to_elevator,Card Castle - Prison
+10392,111,room_cc_prison_prejoker,Card Castle - ???
+10395,114,room_cc_1f,Card Castle - 1F
+10404,123,room_cc_5f,Card Castle - 5F
+10407,126,room_cc_throneroom,Card Castle - Throne
+20004,199,room_dw_mansion_prefountain,Queen's Mansion - Rooftop
+20010,0,room_gms_debug_failsafe,---
+20028,18,room_krisroom,Kris's Room
+20065,55,room_castle_town,Castle Town
+20071,61,room_dw_castle_area_2,Castle Town
+20072,62,room_dw_castle_area_2_transformed,My Castle Town
+20088,78,room_dw_cyber_savepoint,Cyber Field - Entrance
+20093,83,room_dw_cyber_queen_boxing,Cyber Field - Arcade Machine
+20099,89,room_dw_cyber_musical_shop,Cyber Field - Music Shop
+20122,112,room_dw_city_entrance,Cyber City - Entrance
+20125,115,room_dw_city_hacker,Cyber City - First Alleyway
+20131,121,room_dw_city_savepoint,Cyber City - Music Shop
+20136,126,room_dw_city_mice3,Cyber City - Mouse Alley
+20138,128,room_dw_city_berdly,Cyber City - Second Alleyway
+20143,133,room_dw_city_postbaseball_1,Cyber City - Heights
+20162,152,room_dw_mansion_lightner_hallway,Queen's Mansion - Guest Hall
+20167,157,room_dw_mansion_entrance,Queen's Mansion - Entrance
+20181,171,room_dw_mansion_b_central,Queen's Mansion - Basement
+20197,187,room_dw_mansion_east_3f,Queen's Mansion - 3F
+20203,193,room_dw_mansion_acid_tunnel_exit,Queen's Mansion - Acid Tunnel
+20206,196,room_dw_mansion_east_4f_d,Queen's Mansion - 4F
+30097,98,room_dw_couch_overworld_intro,Dark World
+30108,109,room_dw_snow_zone,Cold Place
+30134,135,room_dw_green_room,Green Room
+30178,177,room_dw_b3bs_jail1,TV World - Goulden Sam
+30195,194,room_dw_tv_curtain,TV World - Before the Show
+30196,195,room_dw_teevie_intro,TV World - Entrance
+30209,208,room_dw_teevie_rhythm,TV World - Concert
+30214,213,room_dw_teevie_chef,TV World - Cooking Show
+40014,15,room_krisroom,Kris's Room
+40023,24,room_town_mid,Hometown
+40048,49,room_lw_noellehouse_kitchen,Noelle's House
+40064,65,room_dw_castle_town,My Castle Town
+40108,108,room_dw_church_intro1,Dark Sanctuary - Atrium
+40115,115,room_dw_church_gersonstudy,Dark Sanctuary - Study
+40177,177,room_dw_church_savepoint,Dark Sanctuary - Lower Left
+40219,218,room_dw_church_pianopuzzle,Dark Sanctuary - Small Piano
+40220,219,room_dw_church_nwconnect,Dark Sanctuary - Library
+40228,227,room_dw_church_ripplepuzzle_postgers,Dark Sanctuary - Lower Right
+40248,247,room_dw_churchb_staircaseintro,2nd Sanctuary - Atrium
+40252,251,room_dw_churchb_savepoint,2nd Sanctuary - Floor
+40258,257,room_dw_churchb_gersonstudy,2nd Sanctuary - Study
+40278,277,room_dw_churchc_savepoint,3rd Sanctuary - Stairs
+40281,280,room_dw_churchc_prepretitan,3rd Sanctuary - Last Chamber
+40300,298,room_dw_castle_tv,Castle Town - TV Building
+40306,304,room_dw_churchb_darkclimb,2nd Sanctuary - Study
+40322,322,room_dw_castle_tv_zone_2,MIKE ZONE
+50013,13,room_krisroom,Kris's Room
+50024,24,room_town_south,Hometown
+50054,54,room_dw_castle_town,My Castle Town
+50114,112,room_dw_castle_tv,Castle Town - TV Building
+50122,120,room_dw_garden_intro,Dark World
+50124,122,room_dw_garden_floradinnencounter,Garden - Beginning
+50131,129,room_dw_garden_enemyrush,Garden - Flowery Helped
+50135,133,room_dw_garden_diner,Garden - Ideal Diner
+50143,141,room_dw_garden_aquahole,Garden - Shrine
+50146,144,room_dw_garden_cliffexit,Cliffs - Beginning
+50152,150,room_dw_garden_aquadash,Garden - Way Home
+50163,161,room_dw_cliff_shop,Cliffs - Shop
+50170,167,room_dw_cliff_verticalwind_post,Cliffs - Below Castle
+50181,177,room_dw_fcastle_cafe,Flower Castle - Cafe
+50183,179,room_dw_fcastle_post_party_jail,Flower Castle - Jail
+50187,183,room_dw_fcastle_left_twodoors,Flower Castle - Left Doors
+50191,187,room_dw_fcastle_blueroom,Flower Castle - Left Stage
+50193,189,room_dw_fcastle_onsen,Flower Castle - Left End
+50207,202,room_dw_fcastle_second_diner,Flower Castle - Right Diner
+50210,205,room_dw_fcastle_right_penultimate,Flower Castle - Right View
+50212,207,room_dw_fcastle_right_endingscene,Flower Castle - Right End
+50228,222,room_dw_fcastle_top_entrance,Top of Castle - Beginning
+50230,224,room_dw_fcastle_green_checkpoint,Top of Castle - Green's Shop
+50231,225,room_dw_fcastle_final_save,Top of Castle - Castle Top
+50236,230,room_dw_fcastle_pinkroom,Top of Castle - Boss?
