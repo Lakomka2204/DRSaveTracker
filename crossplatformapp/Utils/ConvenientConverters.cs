@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using Avalonia;
 using Avalonia.Data.Converters;
@@ -101,7 +102,7 @@ public class LatestBackupColorConverter : IMultiValueConverter
         if (values[1] is not SaveFileInfo backup)
             return AvaloniaProperty.UnsetValue;
 
-        bool isLast = save.LastWrite == backup.LastWrite;
+        bool isLast = save.Hash.SequenceEqual(backup.Hash);
         
         return isLast ? ChapterConverter.Convert(
             backup.Chapter,

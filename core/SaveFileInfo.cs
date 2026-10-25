@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.ComponentModel;
-
 namespace DRSTCore
 {
     public partial class SaveFileInfo : ObservableObject
@@ -32,10 +32,13 @@ namespace DRSTCore
         [ObservableProperty]
         private SaveFileInfo[] backups = [];
         public RoomMapper? Mapper { get; set; }
+        public FileInfo FileInfo { get; set; }
+        public byte[] Hash {get;set;} = [];
         public SaveFileInfo(string filename)
         {
             FileName = filename;
-            var name = Path.GetFileName(filename);
+            FileInfo = new(FileName);
+            var name = Path.GetFileName(FileName);
             var match = FileNameRegex().Match(name);
             if (!match.Success)
                 return;
@@ -44,13 +47,16 @@ namespace DRSTCore
             Chapter = int.Parse(match.Groups[1].Value);
             var slot = int.Parse(match.Groups[2].Value) + 1;
             Slot = slot;
-            FileExists = File.Exists(FileName);
+            FileExists = FileInfo.Exists;
             if (!FileExists)
                 return;
-            FileInfo fi = new(filename);
-            LastWrite = fi.LastWriteTime;
-            var lines = File.ReadLines(filename);
-            Name = lines.First() ?? "EMPTY";
+            using var stream = FileInfo.OpenRead();
+            Hash = MD5.HashData(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            LastWrite = FileInfo.LastWriteTime;
+            using StreamReader sr = new(stream);
+            var lines = sr.ReadLines();
+            Name = lines.FirstOrDefault() ?? "EMPTY";
             var rs = lines.TakeLast(2).ToArray();
             var room = rs[0];
             Room = int.Parse(room);
