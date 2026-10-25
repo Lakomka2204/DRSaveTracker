@@ -125,6 +125,21 @@
         FontWeight="Bold"
         SelectedItem="{Binding SelectedSave, Mode=TwoWay}"
         >
+        <TableView.ItemContainerTheme>
+          <ControlTheme
+            TargetType="TableViewRow"
+            BasedOn="{StaticResource {x:Type TableViewRow}}"
+          >
+            <Setter Property="ContextMenu">
+              <ContextMenu>
+                <MenuItem 
+                  Header="Open File in Explorer" 
+                  Command="{Binding $parent[TableView].DataContext.OpenFileInExplorerCommand}"
+                  CommandParameter="{Binding}"/>
+              </ContextMenu>
+            </Setter>
+          </ControlTheme>
+        </TableView.ItemContainerTheme>
         <TableView.Columns>
           <TableViewColumn
             Header="SLOT"

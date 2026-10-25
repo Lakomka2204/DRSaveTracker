@@ -1,10 +1,13 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using crossplatformapp.Utils;
@@ -53,13 +56,26 @@ public partial class MainWindowViewModel : ObservableObject
         Sfw.IsEnabled = !Sfw.IsEnabled;
         Console.WriteLine("Toggling thang {0}", Sfw.IsEnabled);
     }
-
+    [RelayCommand]
+    private async Task OpenFileInExplorer()
+    {
+        if (SelectedSave is null) return;
+        if (!SelectedSave.FileExists) return;
+        var file = SelectedSave.FileName;
+        // very bad hardcoded solution, but its working
+        Process.Start(new ProcessStartInfo
+        {
+           FileName = "explorer.exe",
+           Arguments = $"/select,\"{file}\"",
+           UseShellExecute = true 
+        });
+    }
     [RelayCommand]
     private async Task RestoreSelectedBackup()
     {
         if (SelectedBackup == null) return;
         if (SelectedSave == null) return;
-        if (SelectedBackup.LastWrite == SelectedSave.LastWrite)
+        if (SelectedBackup.Hash.SequenceEqual(SelectedSave.Hash))
         {
             await MessageBoxes.GetOwnMBox(
                 "Can't restore this backup",
