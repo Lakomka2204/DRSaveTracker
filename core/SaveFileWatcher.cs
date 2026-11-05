@@ -5,12 +5,13 @@ namespace DRSTCore;
 
 public partial class SaveFileWatcher : ObservableObject
 {
-    private static readonly string filePattern = "filech*";
+    public static readonly string FilePattern = "filech*";
+    public static readonly string IniFilename = "dr.ini";
     public SaveFileWatcher()
     {
         mainWatcher = new()
         {
-            Filter = filePattern,
+            Filter = FilePattern,
             Path = string.Empty,
         };
         mainWatcher.Changed += WatcherChanged;
@@ -73,7 +74,7 @@ public partial class SaveFileWatcher : ObservableObject
         }
         //! backupdirectory must be set before watchdirectory in order for this to work
         var saves = Directory
-            .GetFiles(WatchDirectory, filePattern)
+            .GetFiles(WatchDirectory, FilePattern)
             .Select(f => new SaveFileInfo(f, rmi, BackupDirectory))
             .Where(s => s.FileExists);
         foreach (var save in saves)
@@ -84,7 +85,7 @@ public partial class SaveFileWatcher : ObservableObject
         var backups = Directory
             .GetDirectories(
                 BackupDirectory,
-                filePattern,
+                FilePattern,
                 SearchOption.TopDirectoryOnly)
             .Select(d => new SaveFileInfo(d, rmi, BackupDirectory));
         var allSaves = saves

@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -7,7 +7,7 @@ namespace DRSTCore
 {
     public partial class SaveFileInfo : ObservableObject
     {
-        [GeneratedRegex(@"^filech(\d)_([012])(?:_\d+)?$")]
+        [GeneratedRegex(@"^filech(\d)_([012])(?:_(\d+))?$")]
         private static partial Regex FileNameRegex();
         [ObservableProperty]
         private int chapter = 0;
@@ -33,9 +33,18 @@ namespace DRSTCore
         private SaveFileInfo[] backups = [];
         [ObservableProperty]
         private long backupSize = 0;
+        [ObservableProperty]
+        private string iniSection = string.Empty;
         public RoomMapper? Mapper { get; set; }
         public FileInfo FileInfo { get; set; }
         public byte[] Hash {get;set;} = [];
+        public static string GetIniSection(int chapter, int slot)
+        {
+            if (chapter >= 2)
+                return string.Format("G_{0}_{1}",chapter,slot);
+            else
+                return string.Format("G_{0}",slot);
+        }
         public SaveFileInfo(string filename)
         {
             FileName = filename;
@@ -49,6 +58,7 @@ namespace DRSTCore
             Chapter = int.Parse(match.Groups[1].Value);
             var slot = int.Parse(match.Groups[2].Value) + 1;
             Slot = slot;
+            IniSection = GetIniSection(Chapter,Slot);
             FileExists = FileInfo.Exists;
             if (!FileExists)
                 return;
@@ -86,13 +96,12 @@ namespace DRSTCore
         {
             var concreteBackupFolder = Path.Join(backupFolder, OriginalFileName);
             if (!Directory.Exists(concreteBackupFolder)) return;
-            BackupSize = new DirectoryInfo(concreteBackupFolder).EnumerateFiles().Sum(f => f.Length);
-            
             Backups = [.. Directory
-                .GetFiles(concreteBackupFolder,"filech*")
+                .GetFiles(concreteBackupFolder,SaveFileWatcher.FilePattern)
                 .Select(f => new SaveFileInfo(f, Mapper))
                 .OrderByDescending(f => f.LastWrite == LastWrite)
                 .ThenByDescending(f => f.LastWrite)];
+            BackupSize = Backups.Sum(f => f.FileInfo.Length);
         }
         public void MakeBackup(string backupFolder)
         {
@@ -109,12 +118,39 @@ namespace DRSTCore
         }
         public string RestoreToOriginal(string originalFolder)
         {
+            System.Console.WriteLine("Restoring original {0} to original folder specified {1}",OriginalFileName,originalFolder);
             var originalFilename = Path.Join(originalFolder, OriginalFileName);
             File.Copy(FileName, originalFilename, true);
             File.Delete(FileName);
+            UpdateIniFile(originalFolder);
             return originalFilename;
         }
-
+        private void UpdateIniFile(string originalFolder)
+        {
+            var iniFilename = Path.Join(originalFolder,SaveFileWatcher.IniFilename);
+            using StreamReader sr = new(iniFilename);
+            var lines = sr.ReadLines();
+            IniParser iniData = new(lines);
+            var s = iniData.GetSection(IniSection);
+            if (s is null)
+            {
+                Console.WriteLine("Couldn't find {0} section in INI",IniSection);
+                return;
+            }
+            var room = s.GetParameter("Room")!;
+            room.Value = IniParameter.ConvertNumbersToString(Room);
+            var date = s.GetParameter("Date")!;
+            date.Value = IniParameter.ConvertNumbersToString(LastWrite.ToOADate());
+            var time = s.GetParameter("Time")!;
+            time.Value = IniParameter.ConvertNumbersToString((int)(PlayTime.TotalSeconds*30));
+            var name = s.GetParameter("Name")!;
+            name.Value = Name;
+            // save to ini
+            var path = Path.GetTempFileName();
+            using StreamWriter sw= new(path);
+            sw.Write(iniData);
+            Console.WriteLine("Wrote temp file to {0}, check manually",path);
+        }
         public override string ToString()
         {
             StringBuilder sb = new();
@@ -128,13 +164,4 @@ namespace DRSTCore
             return sb.ToString();
         }
     }
-    public enum Slot
-    {
-        None = -1,
-        First = 0,
-        Second = 1,
-        Third = 2,
-
-    }
-
 }
