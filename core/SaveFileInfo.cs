@@ -1,4 +1,6 @@
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -7,8 +9,11 @@ namespace DRSTCore
 {
     public partial class SaveFileInfo : ObservableObject
     {
-        [GeneratedRegex(@"^(filech(\d)_([012]))(?:_(\d+))?$")]
-        private static partial Regex FileNameRegex();
+        private static readonly PropertyInfo[] Props =
+            [.. typeof(SaveFileInfo)
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.CanRead&&p.CanWrite&&p.GetIndexParameters().Length == 0)];
+        
         [ObservableProperty]
         private int chapter = 0;
         [ObservableProperty]
@@ -30,15 +35,21 @@ namespace DRSTCore
         [ObservableProperty]
         private bool fileExists = false;
         [ObservableProperty]
-        private SaveFileInfo[] backups = [];
+        private ObservableCollection<SaveFileInfo> backups = [];
         [ObservableProperty]
         private long backupSize = 0;
         [ObservableProperty]
         private string iniSection = string.Empty;
+        [ObservableProperty]
+        private int level = 0;
         public RoomMapper? Mapper { get; set; }
         public FileInfo FileInfo { get; set; }
         public byte[] Hash {get;set;} = [];
-        public int Level { get; set; } = 0;
+        public void CopyFrom(SaveFileInfo source)
+        {
+            foreach(var p in Props)
+                p.SetValue(this,p.GetValue(source));
+        }
         public static string GetIniSection(int chapter, int slot)
         {
             if (chapter >= 2)
@@ -51,7 +62,7 @@ namespace DRSTCore
             FileName = filename;
             FileInfo = new(FileName);
             var name = Path.GetFileName(FileName);
-            var match = FileNameRegex().Match(name);
+            var match = SaveFileWatcher.FileNameRegex().Match(name);
             if (!match.Success)
                 return;
             // throw new ArgumentException("Filename regex unsuccessful", nameof(filename));

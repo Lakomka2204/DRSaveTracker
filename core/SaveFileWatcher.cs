@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace DRSTCore;
@@ -7,6 +8,8 @@ public partial class SaveFileWatcher : ObservableObject
 {
     public static readonly string FilePattern = "filech*";
     public static readonly string IniFilename = "dr.ini";
+    [GeneratedRegex(@"^(filech(\d)_([012]))(?:_(\d+))?$")]
+    public static partial Regex FileNameRegex();
     public SaveFileWatcher()
     {
         mainWatcher = new()
@@ -46,7 +49,7 @@ public partial class SaveFileWatcher : ObservableObject
         int ind = Saves.IndexOf(changed);
         changed = new(filename, rmi, BackupDirectory);
         changed.MakeBackup(BackupDirectory);
-        Saves[ind] = changed;
+        Saves[ind].CopyFrom(changed);
         Console.WriteLine("Changed Save: {0}", changed);
     }
     private void WatcherChanged(object sender, FileSystemEventArgs args)
@@ -54,6 +57,7 @@ public partial class SaveFileWatcher : ObservableObject
         try
         {
             mainWatcher.EnableRaisingEvents = false;
+            // Saves.Remove(Saves.First())
             // do the thang
             if ((args.ChangeType & (WatcherChangeTypes.Created | WatcherChangeTypes.Deleted)) != 0)
                 RefreshInfo();
@@ -79,7 +83,7 @@ public partial class SaveFileWatcher : ObservableObject
             .Where(s => s.FileExists);
         foreach (var save in saves)
         {
-            if (save.Backups.Length == 0)
+            if (save.Backups.Count == 0)
                 save.MakeBackup(BackupDirectory);
         }
         var backups = Directory
