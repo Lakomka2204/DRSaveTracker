@@ -66,6 +66,22 @@ public partial class IniParser
     }
     public IniSection? GetSection(string name)
         => Sections.Find(s => s.Name == name);
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="_">Create new section if doesn't exists regardless of this argument</param>
+    /// <returns></returns>
+    public IniSection GetSection(string name, bool _)
+    {
+        var s = GetSection(name);
+        if (s is null)
+        {
+            s = new IniSection(){Name=name};
+            Sections.Add(s);
+        }
+        return s;
+    }
 }
 public class IniSection
 {
@@ -85,6 +101,22 @@ public class IniSection
     }
     public IniParameter? GetParameter(string name)
         => Parameters.Find(p => p.Name == name);
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="_">Create new parameter if doesn't exists regardless of this argument</param>
+    /// <returns></returns>
+    public IniParameter GetParameter(string name, bool _)
+    {
+        var p = GetParameter(name);
+        if (p is null)
+        {
+            p = new IniParameter() {Name = name};
+            Parameters.Add(p);
+        }
+        return p;
+    }
 }
 public class IniParameter
 {
