@@ -202,8 +202,17 @@ Header="Make backup manually"
                   Effect="{DynamicResource ResourceKey=TitleEffect}"
 
                   Text="{Binding RoomName}"
-                  ToolTip.Tip="{Binding RoomName}"
                   >
+                  <ToolTip.Tip>
+                      <TextBlock>
+                        <TextBlock.Text>
+                          <MultiBinding StringFormat="{}{0} (ID: {1})">
+                            <Binding Path="RoomName"/>
+                            <Binding Path="Room"/>
+                          </MultiBinding>
+                      </TextBlock.Text>
+                      </TextBlock>
+                    </ToolTip.Tip>
                 </TextBlock>
               </DataTemplate>
             </TableViewColumn.CellTemplate>
@@ -275,7 +284,6 @@ Header="Make backup manually"
                   <TextBlock
                     Text="{Binding RoomName}"
                     Effect="{DynamicResource ResourceKey=TitleEffect}"
-                    ToolTip.Tip="{Binding RoomName}"
                     >
                     <TextBlock.Foreground>
                       <MultiBinding Converter="{StaticResource LatestBackupColorConverter}">
@@ -283,6 +291,16 @@ Header="Make backup manually"
                         <Binding/>
                       </MultiBinding>
                     </TextBlock.Foreground>
+                    <ToolTip.Tip>
+                      <TextBlock>
+                        <TextBlock.Text>
+                          <MultiBinding StringFormat="{}{0} (ID: {1})">
+                            <Binding Path="RoomName"/>
+                            <Binding Path="Room"/>
+                          </MultiBinding>
+                      </TextBlock.Text>
+                      </TextBlock>
+                    </ToolTip.Tip>
                   </TextBlock>
                 </DataTemplate>
               </TableViewColumn.CellTemplate>

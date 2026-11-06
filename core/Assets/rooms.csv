@@ -4,6 +4,7 @@ id,localid,gmsname,name
 10321,40,room_dark_eyepuzzle,Eye Puzzle
 10326,45,room_castle_town,Castle Town
 10330,49,room_field_start,Field - Great Door
+10337,56,room_field_maze,Field - Maze of Death
 10340,59,room_field_shop1,Field - Seam's Shop
 10349,68,room_field_checkers3,Field - Great Board
 10352,71,room_field_checkers7,Field - Great Board 2
@@ -59,6 +60,7 @@ id,localid,gmsname,name
 40248,247,room_dw_churchb_staircaseintro,2nd Sanctuary - Atrium
 40252,251,room_dw_churchb_savepoint,2nd Sanctuary - Floor
 40258,257,room_dw_churchb_gersonstudy,2nd Sanctuary - Study
+40271,270,room_dw_churchc_superprophecies,3rd Sanctuary
 40278,277,room_dw_churchc_savepoint,3rd Sanctuary - Stairs
 40281,280,room_dw_churchc_prepretitan,3rd Sanctuary - Last Chamber
 40300,298,room_dw_castle_tv,Castle Town - TV Building
